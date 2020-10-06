@@ -1,0 +1,25 @@
+{
+  "presets": [
+    "@babel/preset-typescript",
+    "@babel/preset-env",
+    "@babel/preset-react",
+    "@lingui/babel-preset-react"
+  ],
+  "plugins": [
+    "macros",
+    "@babel/plugin-syntax-typescript",
+    "@babel/plugin-syntax-dynamic-import",
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        "legacy": true
+      }
+    ],
+    [
+      "@babel/plugin-proposal-class-properties",
+      {
+        "loose": true
+      }
+    ]
+  ]
+}
