@@ -2,3 +2,6 @@ build
 node_modules
 
 yarn-error*.log
+
+packages/*/src/locale/_build
+packages/*/src/locale/*/messages.js

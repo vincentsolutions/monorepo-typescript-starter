@@ -4,17 +4,22 @@
   "private": true,
   "main": "index.ts",
   "scripts": {
-
+    "start": "webpack-dev-server --open --config webpack/webpack.config.local.js",
+    "build": "webpack",
+    "i18n:add-locale": "lingui add-locale",
+    "i18n:extract": "lingui extract",
+    "i18n:compile": "lingui compile"
   },
   "devDependencies": {
-
+    "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-
+    "core-js": "^3.6.5",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "reflect-metadata": "^0.1.13"
   },
-  "peerDependencies": {
-    "react": "^16.13.1"
-  },
+  "peerDependencies": {},
   "browserslist": {
     "production": [
       ">0.2%",

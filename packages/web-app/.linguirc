@@ -1,0 +1,33 @@
+{
+  "sourceLocale": "en",
+  "fallbackLocale": "en",
+  "localeDir": "src/locale/",
+  "srcPathDirs": ["src/"],
+  "format": "po",
+  "compileNamespace": "cjs",
+  "extractBabelOptions": {
+    "plugins": [
+      "macros",
+      "@babel/plugin-syntax-typescript",
+      "@babel/plugin-syntax-dynamic-import",
+      [
+        "@babel/plugin-proposal-decorators",
+        {
+          "legacy": true
+        }
+      ],
+      [
+        "@babel/plugin-proposal-class-properties",
+        {
+          "loose": true
+        }
+      ]
+    ],
+    "presets": [
+      "@babel/preset-typescript",
+      "@babel/preset-env",
+      "@babel/preset-react",
+      "@lingui/babel-preset-react"
+    ]
+  }
+}

@@ -10,7 +10,7 @@
 
   },
   "dependencies": {
-
+    "@aws-amplify/cache": "^3.1.31"
   },
   "peerDependencies": {
     "react": "^16.13.1"
