@@ -11,8 +11,6 @@ export class LocalizationStore extends BaseStore {
     constructor() {
         super();
 
-        makeObservable(this);
-
         setTimeout(() => {
             this.currentLocale = 'fr';
         }, 2000)
@@ -20,6 +18,10 @@ export class LocalizationStore extends BaseStore {
 
     @action updateCurrentLocale(currentLocale: CurrentLocales) {
         this.currentLocale = currentLocale;
+    }
+
+    protected makeObservable(): void {
+        makeObservable(this);
     }
 }
 
