@@ -1,4 +1,4 @@
-import {Module} from '@nestjs/common';
+import {Module, OnModuleInit} from '@nestjs/common';
 import {CoreModule} from './modules/core/core.module';
 import {UsersModule} from './modules/users/users.module';
 import {TypeOrmModule} from "@nestjs/typeorm";
@@ -21,7 +21,7 @@ import {Permission} from "./modules/users/models/Permission";
     controllers: [],
     providers: [],
 })
-export class AppModule {
+export class AppModule implements OnModuleInit {
     private readonly userRepository: Repository<User>;
 
     private readonly SUPER_ADMIN_ID = '00000000-0000-0000-0000-000000000000';
@@ -35,7 +35,10 @@ export class AppModule {
         private readonly commandBus: CommandBus
     ) {
         this.userRepository = connection.getRepository(User);
-        this.ensureSuperAdminExists();
+    }
+
+    async onModuleInit() {
+        await this.ensureSuperAdminExists();
     }
 
     async ensureSuperAdminExists() {

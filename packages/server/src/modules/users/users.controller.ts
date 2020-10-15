@@ -15,15 +15,10 @@ import {UserModel} from "./models/user.model";
 import {DefaultValidationPipe} from "../core/pipes/validation/default-validation.pipe";
 import {CreateUserDto} from "./dtos/create-user.dto";
 import {UsersService} from "./users.service";
-import {UpdateUserFirstNameCommand} from "./commands/impl/update-user-first-name.command";
 import {UpdatePasswordDto} from "./dtos/update-password.dto";
 import {DomainValidationExceptionFilter} from "../core/exceptions/filters/domain-validation.exception-filter";
 import {BaseApiController} from "../core/base/controllers/base-api.controller";
 import {JwtAuthGuard} from "../auth/guards/jwt-auth.guard";
-import {UpdateUserLastNameCommand} from "./commands/impl/update-user-last-name.command";
-import {UpdateUserEmailCommand} from "./commands/impl/update-user-email.command";
-import {UpdateUserPasswordCommand} from "./commands/impl/update-user-password.command";
-import {UpdateUserPhoneNumberCommand} from "./commands/impl/update-user-phone-number.command";
 import {Permission} from "./models/Permission";
 import {Permissions} from "../auth/decorators/permissions.decorator";
 import {PermissionsGuard} from "../auth/guards/permissions.guard";
@@ -81,9 +76,7 @@ export class UsersController extends BaseApiController {
         @Param("id") id: string,
         @Body("firstName") firstName: string
     ) {
-        await this.sendCommands(
-            new UpdateUserFirstNameCommand(id, firstName)
-        )
+        await this.userService.updateFirstName(id, firstName)
 
         return this.findById(id);
     }
@@ -93,9 +86,7 @@ export class UsersController extends BaseApiController {
         @Param("id") id: string,
         @Body("lastName") lastName: string
     ) {
-        await this.sendCommands(
-            new UpdateUserLastNameCommand(id, lastName)
-        );
+        await this.userService.updateLastName(id, lastName)
 
         return this.findById(id);
     }
@@ -105,9 +96,7 @@ export class UsersController extends BaseApiController {
         @Param('id') id: string,
         @Body("email") email: string
     ) {
-        await this.sendCommands(
-            new UpdateUserEmailCommand(id, email)
-        );
+        await this.userService.updateEmail(id, email)
 
         return this.findById(id);
     }
@@ -117,9 +106,7 @@ export class UsersController extends BaseApiController {
         @Param('id') id: string,
         @Body(new DefaultValidationPipe()) dto: UpdatePasswordDto
     ) {
-        await this.sendCommands(
-            new UpdateUserPasswordCommand(id, dto.currentPassword, dto.newPassword)
-        );
+        await this.userService.updatePassword(id, dto)
     }
 
     @Put(':id/phoneNumber')
@@ -127,9 +114,7 @@ export class UsersController extends BaseApiController {
         @Param('id') id: string,
         @Body('phoneNumber') phoneNumber: string
     ) {
-        await this.sendCommands(
-            new UpdateUserPhoneNumberCommand(id, phoneNumber)
-        )
+        await this.userService.updatePhoneNumber(id, phoneNumber)
 
         return this.findById(id);
     }

@@ -7,7 +7,6 @@ import {SignUpDto} from "./dto/sign-up.dto";
 import {Permission} from "../users/models/Permission";
 import {JwtPayload} from "./strategies/jwt/jwt.payload";
 
-
 @Injectable()
 export class AuthService {
     constructor(

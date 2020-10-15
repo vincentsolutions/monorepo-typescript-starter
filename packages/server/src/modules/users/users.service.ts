@@ -10,6 +10,12 @@ import {DeactivateUserCommand} from "./commands/impl/deactivate-user.command";
 import {ReactivateUserCommand} from "./commands/impl/reactivate-user.command";
 import {AddUserPermissionsCommand} from "./commands/impl/add-user-permissions.command";
 import {RemoveUserPermissionsCommand} from "./commands/impl/remove-user-permissions.command";
+import {UpdateUserFirstNameCommand} from "./commands/impl/update-user-first-name.command";
+import {UpdateUserLastNameCommand} from "./commands/impl/update-user-last-name.command";
+import {UpdateUserEmailCommand} from "./commands/impl/update-user-email.command";
+import {UpdatePasswordDto} from "./dtos/update-password.dto";
+import {UpdateUserPasswordCommand} from "./commands/impl/update-user-password.command";
+import {UpdateUserPhoneNumberCommand} from "./commands/impl/update-user-phone-number.command";
 
 @Injectable()
 export class UsersService extends BaseService<User> {
@@ -36,6 +42,41 @@ export class UsersService extends BaseService<User> {
         await this.commandBus.execute(new CreateUserCommand(id, firstName, lastName, email, password, phoneNumber, permissions));
 
         return id;
+    }
+
+    async updateFirstName(id: string, firstName: string) {
+        await this.commandBus.execute(
+            new UpdateUserFirstNameCommand(id, firstName)
+        )
+
+        return this.findById(id);
+    }
+    async updateLastName(id: string, lastName: string) {
+        await this.commandBus.execute(
+            new UpdateUserLastNameCommand(id, lastName)
+        );
+
+        return this.findById(id);
+    }
+    async updateEmail(id: string, email: string) {
+        await this.commandBus.execute(
+            new UpdateUserEmailCommand(id, email)
+        );
+
+        return this.findById(id);
+    }
+    async updatePassword(id: string, dto: UpdatePasswordDto) {
+        await this.commandBus.execute(
+            new UpdateUserPasswordCommand(id, dto.currentPassword, dto.newPassword)
+        );
+    }
+
+    async updatePhoneNumber(id: string, phoneNumber: string) {
+        await this.commandBus.execute(
+            new UpdateUserPhoneNumberCommand(id, phoneNumber)
+        )
+
+        return this.findById(id);
     }
 
     async deactivate(id: string) {
