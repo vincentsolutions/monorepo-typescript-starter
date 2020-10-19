@@ -9,22 +9,28 @@ import {User} from "./modules/users/user.entity";
 import {CommandBus, CqrsModule} from "@nestjs/cqrs";
 import {CreateUserCommand} from "./modules/users/commands/impl/create-user.command";
 import {Permission} from "./modules/users/models/Permission";
+import { DomainModule } from './modules/domain/domain.module';
+import { EventStoreModule } from './modules/event-store/event-store.module';
+import { EventStore } from './modules/event-store/event-store.provider';
+import {EventStoreService} from "./modules/event-store/event-store.service";
 
 @Module({
     imports: [
         TypeOrmModule.forRoot(ormConfig),
+        CqrsModule,
+        EventStoreModule.forFeature(),
         CoreModule,
         UsersModule,
         AuthModule,
-        CqrsModule
+        DomainModule
     ],
     controllers: [],
-    providers: [],
+    providers: [EventStore],
 })
 export class AppModule implements OnModuleInit {
     private readonly userRepository: Repository<User>;
 
-    private readonly SUPER_ADMIN_ID = '00000000-0000-0000-0000-000000000000';
+    private readonly SUPER_ADMIN_ID = '99999999-9999-9999-9999-999999999999';
     private readonly SUPER_ADMIN_EMAIL = 'super_admin@monorepo.xyz.com';
     private readonly SUPER_ADMIN_PASSWORD = 'tD0n6d2AFl8VxnWis8TTddItLOz7qqUXigZmnA6QpOySmfgibvKwkRlxa6SoDby';
     private readonly SUPER_ADMIN_FIRST_NAME = 'Super';
@@ -32,7 +38,8 @@ export class AppModule implements OnModuleInit {
 
     constructor(
         private readonly connection: Connection,
-        private readonly commandBus: CommandBus
+        private readonly commandBus: CommandBus,
+        private readonly eventStoreService: EventStoreService
     ) {
         this.userRepository = connection.getRepository(User);
     }

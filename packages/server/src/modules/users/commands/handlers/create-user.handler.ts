@@ -1,29 +1,46 @@
-import {CreateUserCommand} from "../impl/create-user.command";
-import {BaseCommandHandler} from "../../../core/base/commands/handlers/base.command-handler";
+import {CreateUserCommand, ICreateUser} from "../impl/create-user.command";
+import {BaseCommandHandler} from "../../../domain/commands/handlers/base.command-handler";
 import {CommandHandler} from "@nestjs/cqrs";
-import {UserAggregateRoot} from "../../domain/user.aggregate";
+import {UserAggregateRoot} from "../../user.aggregate";
 import {DomainValidationException} from "../../../core/exceptions/impl/domain-validation.exception";
 import {User} from "../../user.entity";
 import {Connection} from "typeorm/index";
-import {UserFactory} from "../../user.factory";
+import {CryptoService} from "../../../core/services/crypto.service";
 
 @CommandHandler(CreateUserCommand)
-export class CreateUserCommandHandler extends BaseCommandHandler<CreateUserCommand, User, UserAggregateRoot, UserFactory> {
+export class CreateUserCommandHandler extends BaseCommandHandler<CreateUserCommand, User, UserAggregateRoot> {
     constructor(
         connection: Connection,
-        userFactory: UserFactory
+        private readonly cryptoService: CryptoService
     ) {
-        super(User, userFactory, connection);
+        super(User, UserAggregateRoot, connection);
     }
 
-    async executeInternal(command: CreateUserCommand): Promise<any> {
-        const { aggregateRootId, email, password } = command;
+    protected executeInternal(command: CreateUserCommand, aggregateRoot: UserAggregateRoot): Promise<void> {
+        return Promise.resolve(undefined);
+    }
 
-        await this.validateDuplicateEmail(email);
-        this.validatePassword(password);
+    async execute(command: CreateUserCommand): Promise<any> {
+        const { aggregateRootId, ...params } = command;
 
-        const user = await this.initAggregateRootFromCreateCommand(aggregateRootId, command);
-        user.commit();
+        this.logger.log('Starting Command Execution...', this.getContextName());
+
+        await this.validateDuplicateEmail(params.email);
+        this.validatePassword(params.password);
+
+        const hashedPassword = await this.cryptoService.hashPassword(params.password);
+
+        const paramsWithHash: ICreateUser = {
+            ...params,
+            password: hashedPassword
+        }
+
+        const user = new UserAggregateRoot(aggregateRootId, paramsWithHash);
+
+        user.markAsCreated(paramsWithHash);
+        await this.domainService.save(user);
+
+        this.logger.log('Finished Executing Command.', this.getContextName());
     }
 
     async validateDuplicateEmail(email: string) {

@@ -1,4 +1,4 @@
-import {BaseDomainEvent} from "../../../core/base/events/impl/base-domain.event";
+import {BaseDomainEvent} from "../../../domain/events/impl/base-domain.event";
 import {IUpdateUserPhoneNumber} from "../../commands/impl/update-user-phone-number.command";
 
 export class UserPhoneNumberUpdatedEvent extends BaseDomainEvent<IUpdateUserPhoneNumber> {

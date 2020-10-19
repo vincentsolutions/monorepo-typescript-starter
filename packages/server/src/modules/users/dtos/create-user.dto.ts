@@ -16,7 +16,7 @@ export class CreateUserDto extends BaseDto {
     readonly email: string;
 
     @ApiProperty()
-    readonly phoneNumber: string;
+    readonly phoneNumber?: string;
 
     @IsString()
     @MinLength(8)

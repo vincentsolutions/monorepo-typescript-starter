@@ -1,4 +1,4 @@
-import {BaseDomainEvent} from "../../../core/base/events/impl/base-domain.event";
+import {BaseDomainEvent} from "../../../domain/events/impl/base-domain.event";
 import {IRemoveUserPermissions} from "../../commands/impl/remove-user-permissions.command";
 import {Permission} from "../../models/Permission";
 

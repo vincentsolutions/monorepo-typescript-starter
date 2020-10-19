@@ -1,7 +1,7 @@
 import {BaseController} from "./base.controller";
 import {CommandBus, QueryBus} from "@nestjs/cqrs";
 import {Inject} from "@nestjs/common";
-import {BaseCommand} from "../commands/impl/base.command";
+import {BaseCommand} from "../../../domain/commands/impl/base.command";
 import {BaseQuery} from "../queries/base.query";
 
 export class BaseApiController extends BaseController {

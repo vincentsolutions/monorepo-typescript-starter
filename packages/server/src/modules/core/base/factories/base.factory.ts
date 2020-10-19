@@ -1,4 +1,4 @@
-import {BaseAggregateRoot} from "../domain/base.aggregate-root";
+import {BaseAggregateRoot} from "../../../domain/aggregate/base.aggregate-root";
 import {BaseEntity} from "../entities/base-entity";
 
 export abstract class BaseFactory<

@@ -1,4 +1,4 @@
-import {BaseAggregateRoot} from "../../base/domain/base.aggregate-root";
+import {BaseAggregateRoot} from "../../../domain/aggregate/base.aggregate-root";
 import {Type} from "@nestjs/common";
 import {BaseException} from "./base.exception";
 

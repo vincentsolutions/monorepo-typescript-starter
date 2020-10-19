@@ -17,7 +17,7 @@ export class User extends BaseDomainEntity {
     email: string;
 
     @Column({ nullable: true })
-    phoneNumber: string;
+    phoneNumber?: string;
 
     @Column({ default: true })
     isActive: boolean;

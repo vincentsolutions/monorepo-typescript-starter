@@ -1,4 +1,4 @@
-import {BaseDomainEventHandler} from "../../../core/base/events/handlers/base-domain.event-handler";
+import {BaseDomainEventHandler} from "../../../domain/events/handlers/base-domain.event-handler";
 import {UserCreatedEvent} from "../impl/user-created.event";
 import {User} from "../../user.entity";
 import {InjectRepository} from "@nestjs/typeorm";

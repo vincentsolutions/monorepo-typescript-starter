@@ -1,4 +1,4 @@
-import {BaseDomainCommand} from "../../../core/base/commands/impl/base-domain.command";
+import {BaseDomainCommand} from "../../../domain/commands/impl/base-domain.command";
 import {Permission} from "../../models/Permission";
 
 export interface IAddUserPermissions {

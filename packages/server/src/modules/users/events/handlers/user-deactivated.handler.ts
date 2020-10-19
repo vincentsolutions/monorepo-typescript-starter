@@ -1,4 +1,4 @@
-import {BaseEventHandler} from "../../../core/base/events/handlers/base.event-handler";
+import {BaseEventHandler} from "../../../domain/events/handlers/base.event-handler";
 import {UserDeactivatedEvent} from "../impl/user-deactivated.event";
 import {Repository} from "typeorm/index";
 import {User} from "../../user.entity";

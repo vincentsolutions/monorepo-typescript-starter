@@ -1,6 +1,6 @@
 import {BaseCommand} from "./base.command";
 
-export abstract class BaseDomainCommand<TInterface extends {}> extends BaseCommand {
+export abstract class BaseDomainCommand<TInterface extends {} = any> extends BaseCommand {
     protected constructor(
         public readonly aggregateRootId: string
     ) {

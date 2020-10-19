@@ -48,22 +48,16 @@ export class UsersService extends BaseService<User> {
         await this.commandBus.execute(
             new UpdateUserFirstNameCommand(id, firstName)
         )
-
-        return this.findById(id);
     }
     async updateLastName(id: string, lastName: string) {
         await this.commandBus.execute(
             new UpdateUserLastNameCommand(id, lastName)
         );
-
-        return this.findById(id);
     }
     async updateEmail(id: string, email: string) {
         await this.commandBus.execute(
             new UpdateUserEmailCommand(id, email)
         );
-
-        return this.findById(id);
     }
     async updatePassword(id: string, dto: UpdatePasswordDto) {
         await this.commandBus.execute(
@@ -75,8 +69,6 @@ export class UsersService extends BaseService<User> {
         await this.commandBus.execute(
             new UpdateUserPhoneNumberCommand(id, phoneNumber)
         )
-
-        return this.findById(id);
     }
 
     async deactivate(id: string) {

@@ -1,4 +1,4 @@
-import {BaseDomainEvent} from "../../../core/base/events/impl/base-domain.event";
+import {BaseDomainEvent} from "../../../domain/events/impl/base-domain.event";
 import {ICreateUser} from "../../commands/impl/create-user.command";
 
 export class UserCreatedEvent extends BaseDomainEvent<ICreateUser> {

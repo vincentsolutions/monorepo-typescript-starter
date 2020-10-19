@@ -1,7 +1,7 @@
-import { Module } from '@nestjs/common';
+import {Module, OnModuleInit} from '@nestjs/common';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {UsersController} from "./users.controller";
-import {CqrsModule} from "@nestjs/cqrs";
+import {CommandBus, CqrsModule, EventBus} from "@nestjs/cqrs";
 import {UsersService} from "./users.service";
 import {UpdateUserFirstNameCommandHandler} from "./commands/handlers/update-user-first-name.handler";
 import {UserFirstNameUpdatedEventHandler} from "./events/handlers/user-first-name-updated.handler";
@@ -9,7 +9,6 @@ import {User} from "./user.entity";
 import {CreateUserCommandHandler} from "./commands/handlers/create-user.handler";
 import {UserCreatedEventHandler} from "./events/handlers/user-created.handler";
 import {GetUsersQueryHandler} from "./queries/handlers/get-users.handler";
-import {UserFactory} from "./user.factory";
 import {UpdateUserLastNameCommandHandler} from "./commands/handlers/update-user-last-name.handler";
 import {UpdateUserEmailCommandHandler} from "./commands/handlers/update-user-email.handler";
 import {UpdateUserPhoneNumberCommandHandler} from "./commands/handlers/update-user-phone-number.handler";
@@ -27,6 +26,11 @@ import {AddUserPermissionsCommandHandler} from "./commands/handlers/add-user-per
 import {RemoveUserPermissionsCommandHandler} from "./commands/handlers/remove-user-permissions.handler";
 import {UserPermissionsAddedEventHandler} from "./events/handlers/user-permissions-added.handler";
 import {UserPermissionsRemovedEventHandler} from "./events/handlers/user-permissions-removed.handler";
+import {ModuleRef} from "@nestjs/core";
+import {EventStoreModule} from "../event-store/event-store.module";
+import {EventStoreService} from "../event-store/event-store.service";
+import {DomainModule} from "../domain/domain.module";
+import {UserAggregateRoot} from "./user.aggregate";
 
 export const CommandHandlers = [
     CreateUserCommandHandler, UpdateUserFirstNameCommandHandler, UpdateUserLastNameCommandHandler,
@@ -45,11 +49,12 @@ export const QueryHandlers = [ GetUsersQueryHandler, GetUserByQueryHandler ];
 @Module({
     imports: [
         CqrsModule,
-        TypeOrmModule.forFeature([User])
+        EventStoreModule.forFeature(),
+        TypeOrmModule.forFeature([User]),
+        DomainModule.forFeature()
     ],
     providers: [
         UsersService,
-        UserFactory,
         ...CommandHandlers,
         ...EventHandlers,
         ...QueryHandlers
@@ -57,4 +62,21 @@ export const QueryHandlers = [ GetUsersQueryHandler, GetUserByQueryHandler ];
     controllers: [UsersController],
     exports: [TypeOrmModule, UsersService]
 })
-export class UsersModule {}
+export class UsersModule implements OnModuleInit {
+    constructor(
+        private readonly moduleRef: ModuleRef,
+        private readonly commandBus: CommandBus,
+        private readonly eventBus: EventBus,
+        private readonly eventStoreService: EventStoreService
+    ) {
+    }
+
+    onModuleInit(): any {
+        this.eventStoreService.setEventHandlers({});
+        this.eventStoreService.bridgeEventsTo((this.eventBus as any).subject$, UserAggregateRoot.constructor.name);
+        // @ts-ignore
+        // this.eventBus.publisher = this.eventStoreService;
+        this.eventBus.register(EventHandlers);
+        this.commandBus.register(CommandHandlers);
+    }
+}
