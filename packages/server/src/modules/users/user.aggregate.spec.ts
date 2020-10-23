@@ -11,7 +11,7 @@ import {UserReactivatedEvent} from "./events/impl/user-reactivated.event";
 import {UserPermissionsAddedEvent} from "./events/impl/user-permissions-added.event";
 import {UserPermissionsRemovedEvent} from "./events/impl/user-permissions-removed.event";
 
-describe("UserAggregateRoot", () => {
+describe(UserAggregateRoot, () => {
 
     describe("constructor", () => {
         let id: string;

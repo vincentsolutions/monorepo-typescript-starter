@@ -1,6 +1,5 @@
 import {BaseApi, container, IBaseApi, IUserDto, IUserInput} from "../internal";
 import {injectable} from "inversify";
-import {v4} from "uuid";
 
 export interface IUsersApi extends IBaseApi {
     getUsers(): Promise<IUserDto[]>;
@@ -13,19 +12,19 @@ export interface IUsersApi extends IBaseApi {
 @injectable()
 export class UsersApi extends BaseApi implements IUsersApi {
     getUsers(): Promise<IUserDto[]> {
-        return new Promise<IUserDto[]>(resolve => {
-            resolve([
-                {
-                    firstName: "John",
-                    lastName: 'Doe',
-                    email: "john.doe@acme.com",
-                    id: v4(),
-                    permissions: [],
-                    createdAt: new Date().toISOString()
-                }
-            ])
-        })
-        // return this._apiClient.get('/Users');
+        // return new Promise<IUserDto[]>(resolve => {
+        //     resolve([
+        //         {
+        //             firstName: "John",
+        //             lastName: 'Doe',
+        //             email: "john.doe@acme.com",
+        //             id: v4(),
+        //             permissions: [],
+        //             createdAt: new Date().toISOString()
+        //         }
+        //     ])
+        // })
+        return this._apiClient.get('/Users');
     }
 
     getUser(id: string): Promise<IUserDto | undefined> {

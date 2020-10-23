@@ -34,7 +34,7 @@ export class User extends BaseModel<IUserInput, IUserDto> implements IUserDto {
         this.permissions = input.permissions;
 
         reaction(
-            () => [ this.firstName, this.lastName, this.email, this.phoneNumber, ...this.permissions ],
+            () => [ this.firstName, this.lastName, this.email, this.phoneNumber, ...(this.permissions ?? []) ],
             () => this.updateUpdatedAt()
         );
     }

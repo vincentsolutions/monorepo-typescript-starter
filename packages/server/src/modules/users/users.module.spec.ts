@@ -35,6 +35,10 @@ describe('Users', () => {
         await app.init();
     });
 
+    it("should be defined", () => {
+        expect(app).toBeDefined();
+    });
+
     // it('/POST users', () => {
     //     return request(app.getHttpServer())
     //         .post('/users')
@@ -49,7 +53,7 @@ describe('Users', () => {
     })
 })
 
-export const userCreationParams: CreateUserDto = {
+const userCreationParams: CreateUserDto = {
     firstName: "John",
     lastName: "Doe",
     email: "john.doe@monorepo.xyz.com",

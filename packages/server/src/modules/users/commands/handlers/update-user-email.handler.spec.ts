@@ -4,6 +4,7 @@ import {CqrsModule} from "@nestjs/cqrs";
 import {UsersModule} from "../../users.module";
 import {Connection} from "typeorm/index";
 import {EntityClassOrSchema} from "@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type";
+import {CoreModule} from "../../../core/core.module";
 
 describe(UpdateUserEmailCommandHandler, () => {
     let sut: UpdateUserEmailCommandHandler;
@@ -19,7 +20,7 @@ describe(UpdateUserEmailCommandHandler, () => {
 
     beforeAll(async () => {
         const module: TestingModule = await Test.createTestingModule({
-            imports: [CqrsModule, UsersModule],
+            imports: [CqrsModule, CoreModule, UsersModule],
             providers: [
                 UpdateUserEmailCommandHandler
             ]

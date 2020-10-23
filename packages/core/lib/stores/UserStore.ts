@@ -13,8 +13,6 @@ export class UserStore extends BaseCollectionStore<User> {
     }
 
     protected async _loadItems(): Promise<User[]> {
-        console.log(this._usersApi);
-
         const dtos = await this._usersApi.getUsers();
 
         console.log(dtos);
