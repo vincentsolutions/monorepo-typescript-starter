@@ -21,7 +21,7 @@ export class App extends React.Component<IAppProps, { }> {
 
     async bootstrap() {
         await this.signIn();
-        // await this._userStore.loadItems();
+        await this._userStore.loadItems();
         this.initWebsocketConnection();
     }
 
@@ -30,22 +30,20 @@ export class App extends React.Component<IAppProps, { }> {
     }
 
     private initWebsocketConnection() {
-        this._socket.connect();
-        this._socket.on('connect', () => {
-            this._socket
-                .emit('authenticate', { token: this._authStore._accessToken })
-                .on('authenticated', () => {
-                    console.log('authenticated!')
-                })
-                .on('unauthorized', msg => {
-                    console.log(`unauthorized: ${JSON.stringify(msg.data)}`);
-                    throw new Error(msg.data.type);
-                })
-        })
         this._socket.on('UserFirstNameUpdatedEvent', data => {
             console.log('Socket Data: ', data);
         });
-        this._socket.emit('events', 'test');
+        this._socket
+            .connect()
+            .emit('authenticate', { token: this._authStore._accessToken })
+            .on('authenticated', () => {
+                console.log('authenticated!')
+            })
+            .on('unauthorized', msg => {
+                console.log(`unauthorized: ${JSON.stringify(msg.data)}`);
+                throw new Error(msg.data.type);
+            })
+            .emit('events', 'test');
     }
 
     render() {

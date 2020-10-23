@@ -3,8 +3,9 @@ import {BaseEvent} from "../impl/base.event";
 import {Inject} from "@nestjs/common";
 import {Logger} from "../../../core/services/logger.service";
 import {Gateway} from "../../../gateway/gateway.service";
+import {BaseDomainEvent} from "../impl/base-domain.event";
 
-export abstract class BaseEventHandler<TEvent extends BaseEvent> implements IEventHandler<TEvent> {
+export abstract class BaseEventHandler<TEvent extends BaseDomainEvent> implements IEventHandler<TEvent> {
     @Inject() protected readonly logger: Logger;
     @Inject() protected readonly gateway: Gateway;
 
@@ -15,7 +16,7 @@ export abstract class BaseEventHandler<TEvent extends BaseEvent> implements IEve
 
             try {
                 await this.handleInternal(event);
-                await this.gateway.server.emit(Object.getPrototypeOf(event).constructor.name, JSON.stringify(event));
+                await this.gateway.emitToUser(event.aggregateRootId, Object.getPrototypeOf(event).constructor.name, JSON.stringify(event));
 
             } catch (e) {
                 this.logger.error('Error during Event Handling: ', undefined, this.getContextName());
