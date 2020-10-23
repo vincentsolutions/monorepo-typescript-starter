@@ -1,6 +1,5 @@
 import {ApiClient} from "../internal";
-import {AxiosRequestConfig} from "axios";
-import {injectable} from "inversify";
+import {inject, injectable} from "inversify";
 
 export interface IBaseApi {
 
@@ -8,11 +7,7 @@ export interface IBaseApi {
 
 @injectable()
 export class BaseApi implements IBaseApi {
-    protected _apiClient: ApiClient;
-
-    constructor(axiosConfig: AxiosRequestConfig = {}) {
-        this._apiClient = new ApiClient(axiosConfig);
-    }
+    @inject(ApiClient) protected _apiClient: ApiClient;
 }
 
 @injectable()

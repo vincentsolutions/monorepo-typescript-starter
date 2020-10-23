@@ -18,6 +18,7 @@ export * from './models/User';
 // MARK: Apis
 export * from './base/BaseApi';
 export * from './apis/UsersApi';
+export * from './apis/AuthApi';
 
 // MARK: Stores
 export * from './base/BaseStore';

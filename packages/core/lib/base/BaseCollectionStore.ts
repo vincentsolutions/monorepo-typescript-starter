@@ -25,6 +25,7 @@ export abstract class BaseCollectionStore<TModel extends BaseModel> extends Base
     }
 
     protected abstract _loadItems(): Promise<TModel[]>;
+
     @action public async loadItems() {
         this.loadingStates.set(this.loadItems.name, true);
 
