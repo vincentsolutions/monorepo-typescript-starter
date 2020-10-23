@@ -23,24 +23,30 @@ export class CreateUserCommandHandler extends BaseCommandHandler<CreateUserComma
     async execute(command: CreateUserCommand): Promise<any> {
         const { aggregateRootId, ...params } = command;
 
-        this.logger.log('Starting Command Execution...', this.getContextName());
+        this.log('Starting Command Execution...');
 
-        await this.validateDuplicateEmail(params.email);
-        this.validatePassword(params.password);
+        try {
+            await this.validateDuplicateEmail(params.email);
+            this.validatePassword(params.password);
 
-        const hashedPassword = await this.cryptoService.hashPassword(params.password);
+            const hashedPassword = await this.cryptoService.hashPassword(params.password);
 
-        const paramsWithHash: ICreateUser = {
-            ...params,
-            password: hashedPassword
+            const paramsWithHash: ICreateUser = {
+                ...params,
+                password: hashedPassword
+            }
+
+            const user = new UserAggregateRoot(aggregateRootId, paramsWithHash);
+
+            user.markAsCreated(paramsWithHash);
+            await this.domainService.save(user);
+        } catch (e) {
+            this.log('Error during Command Execution:');
+            this.log(e.getDetails?.() ?? e.message ?? e);
+            throw e;
         }
 
-        const user = new UserAggregateRoot(aggregateRootId, paramsWithHash);
-
-        user.markAsCreated(paramsWithHash);
-        await this.domainService.save(user);
-
-        this.logger.log('Finished Executing Command.', this.getContextName());
+        this.log('Finished Executing Command.');
     }
 
     async validateDuplicateEmail(email: string) {

@@ -16,8 +16,8 @@ export class BaseDomainEvent<TInterface extends {} = any> extends BaseEvent {
     }
 
     public static fromEventStore(event: Event) {
-        const dataAsBaseEvent = event.data as BaseDomainEvent;
+        const { aggregateRootId, eventType, params, version } = event.data as BaseDomainEvent;
 
-        return new BaseDomainEvent(dataAsBaseEvent.aggregateRootId, dataAsBaseEvent.params, dataAsBaseEvent.version, dataAsBaseEvent.eventType);
+        return new BaseDomainEvent(aggregateRootId, params, version, eventType);
     }
 }

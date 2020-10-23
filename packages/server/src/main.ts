@@ -6,6 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.setGlobalPrefix('api/v1');
+  app.enableCors({ credentials: true });
 
   const options = new DocumentBuilder()
       .setTitle('Monorepo API')

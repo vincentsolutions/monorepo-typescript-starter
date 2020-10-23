@@ -13,6 +13,9 @@ import { DomainModule } from './modules/domain/domain.module';
 import { EventStoreModule } from './modules/event-store/event-store.module';
 import { EventStore } from './modules/event-store/event-store.provider';
 import {EventStoreService} from "./modules/event-store/event-store.service";
+import {APP_INTERCEPTOR} from "@nestjs/core";
+import {LoggingInterceptor} from "./modules/core/interceptors/logging.interceptor";
+import { GatewayModule } from './modules/gateway/gateway.module';
 
 @Module({
     imports: [
@@ -22,10 +25,17 @@ import {EventStoreService} from "./modules/event-store/event-store.service";
         CoreModule,
         UsersModule,
         AuthModule,
-        DomainModule
+        DomainModule,
+        GatewayModule
     ],
     controllers: [],
-    providers: [EventStore],
+    providers: [
+        EventStore,
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: LoggingInterceptor
+        }
+    ],
 })
 export class AppModule implements OnModuleInit {
     private readonly userRepository: Repository<User>;

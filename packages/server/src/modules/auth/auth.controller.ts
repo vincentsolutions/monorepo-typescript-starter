@@ -3,15 +3,15 @@ import {AuthService} from "./auth.service";
 import {LocalAuthGuard} from "./guards/local-auth.guard";
 import {DefaultValidationPipe} from "../core/pipes/validation/default-validation.pipe";
 import {SignUpDto} from "./dto/sign-up.dto";
-import {DomainValidationExceptionFilter} from "../core/exceptions/filters/domain-validation.exception-filter";
+import {BaseApiController} from "../core/base/controllers/base-api.controller";
 
-@UseFilters(DomainValidationExceptionFilter)
 @Controller('auth')
-export class AuthController {
+export class AuthController extends BaseApiController {
 
     constructor(
         private readonly authService: AuthService
     ) {
+        super();
     }
 
     @UseGuards(LocalAuthGuard)

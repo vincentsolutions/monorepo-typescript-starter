@@ -1,4 +1,4 @@
-import {Injectable, Logger} from '@nestjs/common';
+import {Injectable} from '@nestjs/common';
 import {EventStore} from "./event-store.provider";
 import {BaseDomainEvent} from "../domain/events/impl/base-domain.event";
 import {Config} from "../core/config/config";
@@ -7,6 +7,8 @@ import {Event} from "geteventstore-promise/index";
 import {Subject} from "rxjs";
 import xml2js from 'xml2js';
 import {EventBus} from "@nestjs/cqrs";
+import {BaseAggregateRoot} from "../domain/aggregate/base.aggregate-root";
+import {Logger} from "../core/services/logger.service";
 
 @Injectable()
 export class EventStoreService {
@@ -31,13 +33,16 @@ export class EventStoreService {
             `://${this.config.EVENT_STORE_SETTINGS.hostname}:${this.config.EVENT_STORE_SETTINGS.httpPort}/streams/`;
     }
 
-    async publish<T extends BaseDomainEvent>(event: T, aggregateName: string): Promise<any> {
+    async publish<T extends BaseDomainEvent>(event: T, aggregate: BaseAggregateRoot): Promise<any> {
+        const aggregateName = Object.getPrototypeOf(aggregate).constructor.name;
         const streamName = `${aggregateName}-${event.aggregateRootId}`;
         const eventType = event.constructor.name;
 
         try {
             await this.eventStore.client.writeEvent(streamName, eventType, event);
             await this.eventBus.publish(event);
+
+            aggregate.updateVersion(event.version);
         } catch (e) {
             this.logger.error(e);
         }

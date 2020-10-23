@@ -7,10 +7,12 @@ import {LocalStrategy} from "./strategies/local/local.strategy";
 import {JwtModule} from "@nestjs/jwt";
 import {jwtConstants} from "./constants";
 import {JwtStrategy} from "./strategies/jwt/jwt.strategy";
+import {CqrsModule} from "@nestjs/cqrs";
 
 @Module({
   imports: [
       UsersModule,
+      CqrsModule,
       PassportModule.register({ defaultStrategy: 'jwt' }),
       JwtModule.register({
           secret: jwtConstants.secret,

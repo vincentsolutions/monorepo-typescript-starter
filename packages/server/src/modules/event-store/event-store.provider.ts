@@ -15,7 +15,7 @@ export class EventStore {
     }
 
     connect(config: TCPConfig) {
-        this._client = new TCPClient(config)
+        this._client = new TCPClient(config);
         return this;
     }
 

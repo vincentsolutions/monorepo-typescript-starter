@@ -1,11 +1,13 @@
 import {EventPublisher, ICommandHandler} from "@nestjs/cqrs";
-import {Inject, Logger, LogLevel} from "@nestjs/common";
+import {Inject, LogLevel} from "@nestjs/common";
 import {Connection, Repository} from "typeorm/index";
 import {EntityClassOrSchema} from "@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type";
 import {BaseDomainEntity} from "../../../core/base/entities/base-domain-entity";
 import {AggregateRootConstructor, BaseAggregateRoot} from "../../aggregate/base.aggregate-root";
 import {BaseDomainCommand} from "../impl/base-domain.command";
 import {DomainService} from "../../services/domain.service";
+import {BaseException} from "../../../core/exceptions/impl/base.exception";
+import {Logger} from "../../../core/services/logger.service";
 
 export abstract class BaseCommandHandler<
     TCommand extends BaseDomainCommand,
@@ -35,7 +37,7 @@ export abstract class BaseCommandHandler<
             await this.domainService.processCommandAction(command.aggregateRootId, this.executeInternal, command, this.aggregateConstructor);
         } catch (e) {
             this.log("Error during Command Execution: ", "error");
-            this.log(e.getInfo?.() ?? e.message, "error");
+            this.log((e as BaseException).getDetails?.() ?? e.message, "error");
 
             await this.domainService.evict(command.aggregateRootId);
 

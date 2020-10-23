@@ -1,9 +1,10 @@
-import {Inject, Logger} from "@nestjs/common";
+import {Inject} from "@nestjs/common";
 import {AggregateRootConstructor, BaseAggregateRoot} from "../aggregate/base.aggregate-root";
 import {BaseDomainCommand} from "../commands/impl/base-domain.command";
 import {AggregateSnapshotService} from "./aggregate-snapshot.service";
 import {BaseDomainEvent} from "../events/impl/base-domain.event";
 import {EventStoreService} from "../../event-store/event-store.service";
+import {Logger} from "../../core/services/logger.service";
 
 export class DomainService {
     private readonly _cache: Map<string, BaseAggregateRoot> = new Map<string, BaseAggregateRoot>();
@@ -17,19 +18,17 @@ export class DomainService {
     }
 
     async save<TAggregate extends BaseAggregateRoot>(aggregate: TAggregate) {
-        if (aggregate.version !== 0 && aggregate.version % 100 === 0) {
-            this.snapshotService.updateSnapshot(aggregate)
-        }
-
         this._cache.set(aggregate.id, aggregate);
 
         const uncommittedEvents = aggregate.getUncommittedChanges().slice();
         aggregate.markChangesAsCommitted();
 
-        const aggregateName = Object.getPrototypeOf(aggregate).constructor.name;
-
         for (const event of uncommittedEvents) {
-            await this.eventStoreService.publish(event, aggregateName);
+            await this.eventStoreService.publish(event, aggregate);
+        }
+
+        if (aggregate.version !== 0) { // && aggregate.version % 100 === 0) {
+            await this.snapshotService.updateSnapshot(aggregate);
         }
     }
 

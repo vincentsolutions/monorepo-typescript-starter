@@ -14,15 +14,11 @@ export class AggregateSnapshotService {
         aggregateRootId: string,
         aggregateConstructor: AggregateRootConstructor<TAggregate>
     ) {
-        console.log('Attempting to rebuild aggregate from snapshot')
-
         if (await this.snapshotRepository.count({ where: { aggregateRootId } }) === 1) {
             const snapshot = await this.snapshotRepository.findOne(aggregateRootId);
-            console.log('Found a snapshot, rebuilding...');
             return new aggregateConstructor(aggregateRootId, snapshot.aggregateSnapshot, snapshot.version);
         }
 
-        console.log('Could not find a snapshot, creating new.');
         return new aggregateConstructor(aggregateRootId, {});
     }
 

@@ -10,11 +10,11 @@ export abstract class BaseAggregateRoot {
     private _version: number;
     private _eventVersion: number;
 
-    get id(): string {
+    public get id(): string {
         return this._id;
     }
 
-    get version(): number {
+    public get version(): number {
         return this._version;
     }
 
@@ -25,8 +25,7 @@ export abstract class BaseAggregateRoot {
     ) {
         this._id = id;
         this.buildFromRecord(record);
-        this._version = version;
-        this._eventVersion = this._version;
+        this.updateVersion(version);
     }
 
     public getUncommittedChanges(): BaseDomainEvent[] {
@@ -47,13 +46,24 @@ export abstract class BaseAggregateRoot {
         }
 
         this._id = history[0].aggregateRootId;
-        this._version = history[history.length - 1].version;
-        this._eventVersion = this._version;
+        this.updateVersion(history[history.length - 1].version);
     }
 
     public apply<TEvent extends BaseDomainEvent>(event: TEvent) {
         event.version = this.getEventVersion();
         this.applyInternal(event);
+    }
+
+    public updateVersion(version: number) {
+        this._version = version;
+        this._eventVersion = this._version;
+    }
+
+    public get asJson() {
+        return {
+            id: this.id,
+            version: this.version
+        }
     }
 
     private getEventVersion(): number {
@@ -74,26 +84,19 @@ export abstract class BaseAggregateRoot {
     }
 
     protected buildFromRecord(record: Record<string, any>) {
-        const keysToExclude: string[] = [
+        const keysToExclude: string[]  = [
             '_id',
             'id',
             'version',
             'aggregateRootId'
         ];
 
-        const aggregateRootFunctionNames = Object.getOwnPropertyNames(this).filter(x => typeof this[x] === "function");
+        const aggregateRootPropNames = Object.getOwnPropertyNames(this).filter(x => typeof this[x] !== "function");
 
         for (const key of Object.keys(record)) {
-            if (!aggregateRootFunctionNames.includes(key) && !keysToExclude.includes(key)) {
+            if (aggregateRootPropNames.includes(key) && !keysToExclude.includes(key)) {
                 this[key] = record[key];
             }
-        }
-    }
-
-    public get asJson() {
-        return {
-            id: this.id,
-            version: this.version
         }
     }
 }

@@ -1,8 +1,9 @@
 import {IQuery, IQueryHandler} from "@nestjs/cqrs";
 import {BaseDomainEntity} from "../entities/base-domain-entity";
-import {Inject, Logger} from "@nestjs/common";
+import {Inject} from "@nestjs/common";
 import {Connection, Repository} from "typeorm/index";
 import {EntityClassOrSchema} from "@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type";
+import {Logger} from "../../services/logger.service";
 
 export abstract class BaseQueryHandler<TQuery extends IQuery, TEntity extends BaseDomainEntity, TRes = any> implements IQueryHandler<TQuery, TRes> {
     @Inject(Logger) protected readonly logger: Logger;

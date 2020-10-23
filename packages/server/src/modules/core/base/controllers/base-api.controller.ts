@@ -1,9 +1,11 @@
 import {BaseController} from "./base.controller";
 import {CommandBus, QueryBus} from "@nestjs/cqrs";
-import {Inject} from "@nestjs/common";
+import {Inject, UseFilters} from "@nestjs/common";
 import {BaseCommand} from "../../../domain/commands/impl/base.command";
 import {BaseQuery} from "../queries/base.query";
+import {DomainValidationExceptionFilter} from "../../exceptions/filters/domain-validation.exception-filter";
 
+@UseFilters(DomainValidationExceptionFilter)
 export class BaseApiController extends BaseController {
     @Inject() protected readonly commandBus: CommandBus;
     @Inject() protected readonly queryBus: QueryBus;
