@@ -14,7 +14,7 @@ export class UserEmailUpdatedEventHandler extends BaseEventHandler<UserEmailUpda
     }
 
     async handleInternal(event: UserEmailUpdatedEvent) {
-        const { aggregateRootId, email } = event;
+        const { aggregateRootId, params: { email } } = event;
 
         const user = await this.userRepository.findOne(aggregateRootId);
         user.email = email;

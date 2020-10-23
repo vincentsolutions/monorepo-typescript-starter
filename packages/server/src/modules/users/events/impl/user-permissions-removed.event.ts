@@ -5,8 +5,8 @@ import {Permission} from "../../models/Permission";
 export class UserPermissionsRemovedEvent extends BaseDomainEvent<IRemoveUserPermissions> {
     constructor(
         aggregateRootId: string,
-        public readonly permissionsToRemove: Permission[]
+        params: IRemoveUserPermissions
     ) {
-        super(aggregateRootId);
+        super(aggregateRootId, params);
     }
 }

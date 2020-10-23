@@ -14,10 +14,10 @@ export class UserPasswordUpdatedEventHandler extends BaseEventHandler<UserPasswo
     }
 
     async handleInternal(event: UserPasswordUpdatedEvent) {
-        const { aggregateRootId, password } = event;
+        const { aggregateRootId, params: { newPassword } } = event;
 
         const user = await this.userRepository.findOne(aggregateRootId);
-        user.password = password;
+        user.password = newPassword;
 
         await this.userRepository.save(user);
     }

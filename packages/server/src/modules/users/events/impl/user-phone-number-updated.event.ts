@@ -4,8 +4,8 @@ import {IUpdateUserPhoneNumber} from "../../commands/impl/update-user-phone-numb
 export class UserPhoneNumberUpdatedEvent extends BaseDomainEvent<IUpdateUserPhoneNumber> {
     constructor(
         aggregateRootId: string,
-        public readonly phoneNumber: string
+        params: IUpdateUserPhoneNumber
     ) {
-        super(aggregateRootId);
+        super(aggregateRootId, params);
     }
 }

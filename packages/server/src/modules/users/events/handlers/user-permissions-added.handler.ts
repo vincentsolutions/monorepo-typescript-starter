@@ -14,7 +14,7 @@ export class UserPermissionsAddedEventHandler extends BaseEventHandler<UserPermi
     }
 
     async handleInternal(event: UserPermissionsAddedEvent) {
-        const { aggregateRootId, permissionsToAdd } = event;
+        const { aggregateRootId, params: { permissionsToAdd } } = event;
 
         const user = await this.userRepository.findOne(aggregateRootId);
 

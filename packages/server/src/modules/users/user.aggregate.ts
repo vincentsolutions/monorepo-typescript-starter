@@ -25,7 +25,7 @@ export class UserAggregateRoot extends BaseAggregateRoot {
         [ UserPermissionsRemovedEvent.name, this.onUserPermissionsRemovedEvent ],
     ]);
 
-    private email: string;
+    private email: string = "";
     private isActive: boolean = true;
 
     private permissions: Permission[] = [];
@@ -37,25 +37,25 @@ export class UserAggregateRoot extends BaseAggregateRoot {
         super(id, params);
     }
 
-    updateFirstName(newFirstName: string) {
-        this.apply(new UserFirstNameUpdatedEvent(this.id, newFirstName));
+    updateFirstName(firstName: string) {
+        this.apply(new UserFirstNameUpdatedEvent(this.id, { firstName }));
     }
 
-    updateLastName(newLastName: string) {
-        this.apply(new UserLastNameUpdatedEvent(this.id, newLastName));
+    updateLastName(lastName: string) {
+        this.apply(new UserLastNameUpdatedEvent(this.id, { lastName }));
     }
 
-    updateEmail(newEmail: string) {
-        this.apply(new UserEmailUpdatedEvent(this.id, newEmail));
+    updateEmail(email: string) {
+        this.apply(new UserEmailUpdatedEvent(this.id, { email }));
     }
 
     @autobind
     onUserEmailUpdatedEvent(event: UserEmailUpdatedEvent) {
-        this.email = event.email;
+        this.email = event.params.email;
     }
 
-    updatePhoneNumber(newPhoneNumber?: string) {
-        this.apply(new UserPhoneNumberUpdatedEvent(this.id, newPhoneNumber));
+    updatePhoneNumber(phoneNumber?: string) {
+        this.apply(new UserPhoneNumberUpdatedEvent(this.id, { phoneNumber }));
     }
 
     reactivate() {
@@ -85,7 +85,7 @@ export class UserAggregateRoot extends BaseAggregateRoot {
     }
 
     updatePassword(newPassword: string) {
-        this.apply(new UserPasswordUpdatedEvent(this.id, newPassword));
+        this.apply(new UserPasswordUpdatedEvent(this.id, { newPassword, currentPassword: "" }));
     }
 
     addPermissions(permissionsToAdd: Permission[]) {
@@ -93,12 +93,13 @@ export class UserAggregateRoot extends BaseAggregateRoot {
             return;
         }
 
-        this.apply(new UserPermissionsAddedEvent(this.id, permissionsToAdd));
+        this.apply(new UserPermissionsAddedEvent(this.id, { permissionsToAdd }));
     }
 
     @autobind
     onUserPermissionsAddedEvent(event: UserPermissionsAddedEvent) {
-        for (const permission of event.permissionsToAdd) {
+        console.log(event);
+        for (const permission of event.params.permissionsToAdd) {
             if (this.permissions.includes(permission)) {
                 continue;
             }
@@ -116,12 +117,12 @@ export class UserAggregateRoot extends BaseAggregateRoot {
             throw new DomainValidationException("Permissions to be removed are not all present on User", UserAggregateRoot);
         }
 
-        this.apply(new UserPermissionsRemovedEvent(this.id, permissionsToRemove));
+        this.apply(new UserPermissionsRemovedEvent(this.id, { permissionsToRemove }));
     }
 
     @autobind
     onUserPermissionsRemovedEvent(event: UserPermissionsRemovedEvent) {
-        for (const permission of event.permissionsToRemove) {
+        for (const permission of event.params.permissionsToRemove) {
             const index = this.permissions.indexOf(permission);
 
             if (index >= 0) {

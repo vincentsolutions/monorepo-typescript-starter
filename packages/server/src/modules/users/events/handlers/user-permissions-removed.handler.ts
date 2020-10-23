@@ -14,7 +14,7 @@ export class UserPermissionsRemovedEventHandler extends BaseEventHandler<UserPer
     }
 
     async handleInternal(event: UserPermissionsRemovedEvent) {
-        const { aggregateRootId, permissionsToRemove } = event;
+        const { aggregateRootId, params: { permissionsToRemove } } = event;
 
         const user = await this.userRepository.findOne(aggregateRootId);
 

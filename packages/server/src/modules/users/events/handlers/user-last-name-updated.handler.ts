@@ -14,7 +14,7 @@ export class UserLastNameUpdatedEventHandler extends BaseEventHandler<UserLastNa
     }
 
     async handleInternal(event: UserLastNameUpdatedEvent) {
-        const { aggregateRootId, lastName } = event;
+        const { aggregateRootId, params: { lastName } } = event;
 
         const user = await this.userRepository.findOne(aggregateRootId);
         user.lastName = lastName;

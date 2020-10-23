@@ -14,7 +14,7 @@ export class UserPhoneNumberUpdatedEventHandler extends BaseEventHandler<UserPho
     }
 
     async handleInternal(event: UserPhoneNumberUpdatedEvent) {
-        const { aggregateRootId, phoneNumber } = event;
+        const { aggregateRootId, params: { phoneNumber } } = event;
 
         const user = await this.userRepository.findOne(aggregateRootId);
         user.phoneNumber = phoneNumber;

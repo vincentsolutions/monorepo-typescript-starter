@@ -4,8 +4,8 @@ import {IUpdateUserEmail} from "../../commands/impl/update-user-email.command";
 export class UserEmailUpdatedEvent extends BaseDomainEvent<IUpdateUserEmail> {
     constructor(
         aggregateRootId: string,
-        public readonly email: string
+        params: IUpdateUserEmail
     ) {
-        super(aggregateRootId);
+        super(aggregateRootId, params);
     }
 }

@@ -4,8 +4,8 @@ import {IUpdateUserPassword} from "../../commands/impl/update-user-password.comm
 export class UserPasswordUpdatedEvent extends BaseDomainEvent<IUpdateUserPassword> {
     constructor(
         aggregateRootId: string,
-        public readonly password: string
+        params: IUpdateUserPassword
     ) {
-        super(aggregateRootId);
+        super(aggregateRootId, params);
     }
 }

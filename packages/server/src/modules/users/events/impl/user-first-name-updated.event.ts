@@ -4,8 +4,8 @@ import {IUpdateUserFirstName} from "../../commands/impl/update-user-first-name.c
 export class UserFirstNameUpdatedEvent extends BaseDomainEvent<IUpdateUserFirstName> {
     constructor(
         aggregateRootId: string,
-        public readonly firstName: string
+        params: IUpdateUserFirstName
     ) {
-        super(aggregateRootId);
+        super(aggregateRootId, params);
     }
 }
