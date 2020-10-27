@@ -4,13 +4,18 @@
   "private": true,
   "license": "MIT",
   "author": "Charles Eric Vincent",
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": [ "packages/*" ],
+    "nohoist": [ "**/typeorm", "**/typeorm/**" ]
+  },
   "scripts": {
     "typeorm": "ts-node -r tsconfig-paths/register node_modules/typeorm/cli.js",
     "migration:generate": "yarn run typeorm migration:generate -n",
-    "migration:run": "yarn run typeorm migration:run"
+    "migration:run": "yarn run typeorm migration:run",
+    "eventstore:start": "EventStore.ClusterNode.exe --db ./db --log ./logs --run-projections=all --start-standard-projections=true",
+    "server:start:dev": "yarn workspace @monorepo/server start:dev",
+    "server:start:debug": "yarn workspace @monorepo/server start:debug",
+    "web-app:start": "yarn workspace @monorepo/web-app start"
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
@@ -33,11 +38,6 @@
     "@types/lingui__core": "^2.7.1",
     "@types/lingui__macro": "^2.7.4",
     "@types/lingui__react": "^2.8.3",
-    "@types/node": "^14.11.4",
-    "@types/react": "^16.9.51",
-    "@types/react-dom": "^16.9.8",
-    "@types/react-router": "^5.1.8",
-    "@types/react-router-dom": "^5.1.6",
     "@types/uuid": "^8.3.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "^8.1.0",
@@ -79,10 +79,6 @@
     "mobx-react-devtools": "^6.1.1",
     "mobx-utils": "^6.0.1",
     "moment": "^2.29.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0",
     "reactstrap": "^8.6.0",
     "uuid": "^8.3.1"
   }
