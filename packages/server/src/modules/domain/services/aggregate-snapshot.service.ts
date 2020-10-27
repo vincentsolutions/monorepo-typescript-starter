@@ -2,11 +2,12 @@ import {AggregateRootConstructor, BaseAggregateRoot} from "../aggregate/base.agg
 import {InjectRepository} from "@nestjs/typeorm";
 import {AggregateSnapshot} from "../entities/aggregate-snapshot.entity";
 import {Repository} from "typeorm/index";
+import {AggregateSnapshotRepository} from "../repositories/aggregate-snapshot.repository";
 
 export class AggregateSnapshotService {
 
     constructor(
-        @InjectRepository(AggregateSnapshot) private readonly snapshotRepository: Repository<AggregateSnapshot>
+        @InjectRepository(AggregateSnapshotRepository) private readonly snapshotRepository: AggregateSnapshotRepository
     ) {
     }
 

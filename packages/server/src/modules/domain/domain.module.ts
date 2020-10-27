@@ -6,12 +6,13 @@ import {AggregateSnapshot} from "./entities/aggregate-snapshot.entity";
 import {AggregateSnapshotService} from "./services/aggregate-snapshot.service";
 import {EventStoreModule} from "../event-store/event-store.module";
 import {EventStoreService} from "../event-store/event-store.service";
+import {AggregateSnapshotRepository} from "./repositories/aggregate-snapshot.repository";
 
 @Module({
     imports: [
         CqrsModule,
         EventStoreModule.forFeature(),
-        TypeOrmModule.forFeature([ AggregateSnapshot ])
+        TypeOrmModule.forFeature([ AggregateSnapshot, AggregateSnapshotRepository ])
     ],
     providers: [
         DomainService,

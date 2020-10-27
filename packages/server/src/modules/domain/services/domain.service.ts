@@ -52,6 +52,7 @@ export class DomainService {
             if (cachedAggregate) {
                 console.log('Resolved aggregate in cache successfully.');
                 resolve(cachedAggregate as unknown as TAggregate);
+                return;
             }
 
             console.log('Could not resolve aggregate in cache.');
@@ -73,6 +74,7 @@ export class DomainService {
     }
 
     async evict(aggregateId: string) {
+        this.logger.log("Starting Aggregate Evicting Process");
         this._cache.delete(aggregateId);
 
         try {

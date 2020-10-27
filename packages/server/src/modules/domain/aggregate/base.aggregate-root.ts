@@ -71,7 +71,9 @@ export abstract class BaseAggregateRoot {
     }
 
     private applyInternal<TEvent extends BaseDomainEvent>(event: TEvent, isNew: boolean = true) {
-        if (isNew) this._changes.push(event);
+        if (isNew) {
+            this._changes.push(event);
+        }
 
         const handler = this.handlers.get(event.eventType);
 

@@ -6,7 +6,7 @@ export class BaseDomainEvent<TInterface extends {} = any> extends BaseEvent {
 
     constructor(
         public readonly aggregateRootId: string,
-        public readonly params?: TInterface,
+        public readonly params: TInterface = {} as any,
         public version: number = 1,
         eventType?: string,
     ) {

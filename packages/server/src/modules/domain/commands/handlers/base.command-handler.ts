@@ -14,7 +14,6 @@ export abstract class BaseCommandHandler<
     TEntity extends BaseDomainEntity,
     TAggregate extends BaseAggregateRoot
 > implements ICommandHandler<TCommand> {
-    @Inject(EventPublisher) protected readonly publisher: EventPublisher;
     @Inject(DomainService) protected readonly domainService: DomainService;
     @Inject(Logger) protected readonly logger: Logger;
 
