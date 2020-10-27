@@ -17,11 +17,11 @@ export class LoggingInterceptor implements NestInterceptor {
         const httpContext = context.switchToHttp();
 
         const request = httpContext.getRequest<Request>();
-        const methodAndPath = `${request.method.toUpperCase()} ${request.path.toUpperCase()}`;
+        const logMessagePrefix = `[WEB REQUEST] ${request.method.toUpperCase()} ${request.path}`;
 
         const now = moment();
 
-        this.logger.log(`[WEB REQUEST] ${methodAndPath} Started @ ${now.format('lll')}`);
+        this.logger.log(`${logMessagePrefix} Started @ ${now.format('ll HH:mm:ss.SSS')}`);
 
         return next
             .handle()
@@ -29,7 +29,7 @@ export class LoggingInterceptor implements NestInterceptor {
                 tap(() => {
                     const durationInMs = moment().diff(now, 'millisecond');
 
-                    this.logger.log(`[WEB REQUEST] ${methodAndPath} Ended @ ${now.format('lll')} (${durationInMs}ms ago)`);
+                    this.logger.log(`${logMessagePrefix} Ended @ ${now.format('ll HH:mm:ss.SSS')} (${durationInMs}ms ago)`);
                 })
             );
     }

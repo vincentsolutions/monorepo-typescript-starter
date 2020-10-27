@@ -1,4 +1,5 @@
 import {Injectable} from "@nestjs/common";
+import {Environment} from "@sharedKernel";
 
 @Injectable()
 export class Config {
@@ -16,4 +17,6 @@ export class Config {
             max: 10
         }
     }
+
+    public readonly ENVIRONMENT: Environment = Environment[process.env.ENVIRONMENT ?? Environment[Environment.LOCAL]];
 }
