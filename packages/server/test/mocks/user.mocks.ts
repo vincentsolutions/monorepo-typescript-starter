@@ -1,6 +1,6 @@
 import {User} from "../../src/modules/users/user.entity";
 import {v4} from "uuid";
-import {Permission} from "../../src/modules/users/models/Permission";
+import {Permission} from "@sharedKernel";
 
 export class UserMock_JohnDoe extends User {
     firstName: string = "John";
