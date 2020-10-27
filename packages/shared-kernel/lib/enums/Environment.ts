@@ -5,7 +5,7 @@ export enum Environment {
 }
 
 export function getCurrEnv(): Environment {
-    const envValue = process.env.ENVIRONMENT as string;
+    const envValue = (process.env.ENVIRONMENT ?? process.env.REACT_APP_ENVIRONMENT) as string;
 
     try {
         return Environment[envValue.toUpperCase()];

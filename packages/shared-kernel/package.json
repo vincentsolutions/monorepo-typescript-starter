@@ -1,0 +1,18 @@
+{
+  "name": "@monorepo/shared-kernel",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.ts",
+  "scripts": {
+
+  },
+  "devDependencies": {
+
+  },
+  "dependencies": {
+
+  },
+  "peerDependencies": {
+
+  }
+}
