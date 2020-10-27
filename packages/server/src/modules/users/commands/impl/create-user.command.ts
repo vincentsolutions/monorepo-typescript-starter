@@ -1,5 +1,5 @@
 import {BaseDomainCommand} from "../../../domain/commands/impl/base-domain.command";
-import {Permission} from "../../models/Permission";
+import {Permission} from "@sharedKernel";
 
 export interface ICreateUser {
     readonly firstName: string;

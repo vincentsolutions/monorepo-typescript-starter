@@ -19,10 +19,11 @@ import {UpdatePasswordDto} from "./dtos/update-password.dto";
 import {DomainValidationExceptionFilter} from "../core/exceptions/filters/domain-validation.exception-filter";
 import {BaseApiController} from "../core/base/controllers/base-api.controller";
 import {JwtAuthGuard} from "../auth/guards/jwt-auth.guard";
-import {Permission} from "./models/Permission";
 import {Permissions} from "../auth/decorators/permissions.decorator";
 import {PermissionsGuard} from "../auth/guards/permissions.guard";
 import {OwnUserGuard} from "./guards/own-user.guard";
+import {Permission} from "@sharedKernel";
+import {Transaction} from "../core/decorators/transaction.decorator";
 
 @UseFilters(DomainValidationExceptionFilter)
 @UseGuards(JwtAuthGuard, PermissionsGuard, OwnUserGuard)
@@ -66,9 +67,7 @@ export class UsersController extends BaseApiController {
 
     @Post()
     async create(@Body(new DefaultValidationPipe()) dto: CreateUserDto) {
-        const id = await this.userService.create(dto.firstName, dto.lastName, dto.email, dto.password, dto.phoneNumber);
-
-        return this.findById(id);
+        this.userService.create(dto.firstName, dto.lastName, dto.email, dto.password, dto.phoneNumber);
     }
 
     @Put(':id/firstName')
@@ -76,9 +75,7 @@ export class UsersController extends BaseApiController {
         @Param("id") id: string,
         @Body("firstName") firstName: string
     ) {
-        await this.userService.updateFirstName(id, firstName)
-
-        return this.findById(id);
+        this.userService.updateFirstName(id, firstName);
     }
 
     @Put(':id/lastName')
@@ -86,9 +83,7 @@ export class UsersController extends BaseApiController {
         @Param("id") id: string,
         @Body("lastName") lastName: string
     ) {
-        await this.userService.updateLastName(id, lastName)
-
-        return this.findById(id);
+        this.userService.updateLastName(id, lastName);
     }
 
     @Put(':id/email')
@@ -96,9 +91,7 @@ export class UsersController extends BaseApiController {
         @Param('id') id: string,
         @Body("email") email: string
     ) {
-        await this.userService.updateEmail(id, email)
-
-        return this.findById(id);
+        this.userService.updateEmail(id, email);
     }
 
     @Put(':id/password')
@@ -106,7 +99,7 @@ export class UsersController extends BaseApiController {
         @Param('id') id: string,
         @Body(new DefaultValidationPipe()) dto: UpdatePasswordDto
     ) {
-        await this.userService.updatePassword(id, dto)
+        this.userService.updatePassword(id, dto)
     }
 
     @Put(':id/phoneNumber')
@@ -114,9 +107,7 @@ export class UsersController extends BaseApiController {
         @Param('id') id: string,
         @Body('phoneNumber') phoneNumber: string
     ) {
-        await this.userService.updatePhoneNumber(id, phoneNumber)
-
-        return this.findById(id);
+        this.userService.updatePhoneNumber(id, phoneNumber);
     }
 
     @Put(':id/reactivate')
@@ -125,7 +116,7 @@ export class UsersController extends BaseApiController {
     async reactivate(
         @Param('id') id: string
     ) {
-        await this.userService.reactivate(id);
+        this.userService.reactivate(id);
     }
 
     @Put(':id/deactivate')
@@ -134,7 +125,7 @@ export class UsersController extends BaseApiController {
     async deactivate(
         @Param('id') id: string
     ) {
-        await this.userService.deactivate(id);
+        this.userService.deactivate(id);
     }
 
     @Post(':id/permissions')
@@ -144,7 +135,7 @@ export class UsersController extends BaseApiController {
         @Param('id') id: string,
         @Body('permissions') permissions: Permission[]
     ) {
-        await this.userService.addPermissions(id, permissions);
+        this.userService.addPermissions(id, permissions);
     }
 
     @Delete(':id/permissions')
@@ -154,6 +145,6 @@ export class UsersController extends BaseApiController {
         @Param('id') id: string,
         @Body('permissions') permissions: Permission[]
     ) {
-        await this.userService.removePermissions(id, permissions);
+        this.userService.removePermissions(id, permissions);
     }
 }

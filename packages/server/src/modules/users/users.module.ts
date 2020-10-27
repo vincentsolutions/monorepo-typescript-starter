@@ -31,6 +31,8 @@ import {EventStoreModule} from "../event-store/event-store.module";
 import {EventStoreService} from "../event-store/event-store.service";
 import {DomainModule} from "../domain/domain.module";
 import {UserAggregateRoot} from "./user.aggregate";
+import {UserRepository} from "./user.repository";
+import {getConnection} from "typeorm/index";
 
 export const CommandHandlers = [
     CreateUserCommandHandler, UpdateUserFirstNameCommandHandler, UpdateUserLastNameCommandHandler,
@@ -50,7 +52,7 @@ export const QueryHandlers = [ GetUsersQueryHandler, GetUserByQueryHandler ];
     imports: [
         CqrsModule,
         EventStoreModule.forFeature(),
-        TypeOrmModule.forFeature([User]),
+        TypeOrmModule.forFeature([User, UserRepository]),
         DomainModule.forFeature()
     ],
     providers: [
@@ -76,7 +78,7 @@ export class UsersModule implements OnModuleInit {
         this.eventStoreService.bridgeEventsTo((this.eventBus as any).subject$, UserAggregateRoot.constructor.name);
         // @ts-ignore
         // this.eventBus.publisher = this.eventStoreService;
-        this.eventBus.register(EventHandlers);
-        this.commandBus.register(CommandHandlers);
+        // this.eventBus.register(EventHandlers);
+        // this.commandBus.register(CommandHandlers);
     }
 }

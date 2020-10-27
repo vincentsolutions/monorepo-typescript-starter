@@ -1,22 +1,21 @@
 import {BaseEventHandler} from "../../../domain/events/handlers/base.event-handler";
 import {UserPermissionsAddedEvent} from "../impl/user-permissions-added.event";
-import {Repository} from "typeorm/index";
-import {User} from "../../user.entity";
+import {Connection} from "typeorm/index";
 import {EventsHandler} from "@nestjs/cqrs";
-import {InjectRepository} from "@nestjs/typeorm";
+import {UserRepository} from "../../user.repository";
 
 @EventsHandler(UserPermissionsAddedEvent)
-export class UserPermissionsAddedEventHandler extends BaseEventHandler<UserPermissionsAddedEvent> {
+export class UserPermissionsAddedEventHandler extends BaseEventHandler<UserPermissionsAddedEvent, UserRepository> {
     constructor(
-        @InjectRepository(User) private readonly userRepository: Repository<User>
+        connection: Connection
     ) {
-        super();
+        super(UserRepository, connection);
     }
 
     async handleInternal(event: UserPermissionsAddedEvent) {
         const { aggregateRootId, params: { permissionsToAdd } } = event;
 
-        const user = await this.userRepository.findOne(aggregateRootId);
+        const user = await this.entityRepository.findOne(aggregateRootId);
 
         for (const permission of permissionsToAdd) {
             if (user.permissions.includes(permission)) {
@@ -26,6 +25,6 @@ export class UserPermissionsAddedEventHandler extends BaseEventHandler<UserPermi
             user.permissions.push(permission)
         }
 
-        await this.userRepository.save(user);
+        await this.entityRepository.save(user);
     }
 }

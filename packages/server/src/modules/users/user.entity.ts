@@ -1,6 +1,6 @@
 import {Column, Entity, Index} from "typeorm/index";
 import {BaseDomainEntity} from "../core/base/entities/base-domain-entity";
-import {Permission} from "./models/Permission";
+import {Permission} from "@sharedKernel";
 
 @Entity({ name: "user" })
 export class User extends BaseDomainEntity {

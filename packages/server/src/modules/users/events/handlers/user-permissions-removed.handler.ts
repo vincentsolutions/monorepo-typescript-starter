@@ -1,25 +1,24 @@
 import {BaseEventHandler} from "../../../domain/events/handlers/base.event-handler";
 import {UserPermissionsRemovedEvent} from "../impl/user-permissions-removed.event";
-import {Repository} from "typeorm/index";
-import {User} from "../../user.entity";
+import {Connection} from "typeorm/index";
 import {EventsHandler} from "@nestjs/cqrs";
-import {InjectRepository} from "@nestjs/typeorm";
+import {UserRepository} from "../../user.repository";
 
 @EventsHandler(UserPermissionsRemovedEvent)
-export class UserPermissionsRemovedEventHandler extends BaseEventHandler<UserPermissionsRemovedEvent> {
+export class UserPermissionsRemovedEventHandler extends BaseEventHandler<UserPermissionsRemovedEvent, UserRepository> {
     constructor(
-        @InjectRepository(User) private readonly userRepository: Repository<User>
+        connection: Connection
     ) {
-        super();
+        super(UserRepository, connection);
     }
 
     async handleInternal(event: UserPermissionsRemovedEvent) {
         const { aggregateRootId, params: { permissionsToRemove } } = event;
 
-        const user = await this.userRepository.findOne(aggregateRootId);
+        const user = await this.entityRepository.findOne(aggregateRootId);
 
         user.permissions = user.permissions.filter(x => !permissionsToRemove.includes(x));
 
-        await this.userRepository.save(user);
+        await this.entityRepository.save(user);
     }
 }

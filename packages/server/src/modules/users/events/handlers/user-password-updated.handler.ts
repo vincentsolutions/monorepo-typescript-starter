@@ -1,24 +1,23 @@
 import {BaseEventHandler} from "../../../domain/events/handlers/base.event-handler";
 import {UserPasswordUpdatedEvent} from "../impl/user-password-updated.event";
-import {Repository} from "typeorm/index";
-import {User} from "../../user.entity";
+import {Connection} from "typeorm/index";
 import {EventsHandler} from "@nestjs/cqrs";
-import {InjectRepository} from "@nestjs/typeorm";
+import {UserRepository} from "../../user.repository";
 
 @EventsHandler(UserPasswordUpdatedEvent)
-export class UserPasswordUpdatedEventHandler extends BaseEventHandler<UserPasswordUpdatedEvent> {
+export class UserPasswordUpdatedEventHandler extends BaseEventHandler<UserPasswordUpdatedEvent, UserRepository> {
     constructor(
-        @InjectRepository(User) private readonly userRepository: Repository<User>
+        connection: Connection
     ) {
-        super();
+        super(UserRepository, connection);
     }
 
     async handleInternal(event: UserPasswordUpdatedEvent) {
         const { aggregateRootId, params: { newPassword } } = event;
 
-        const user = await this.userRepository.findOne(aggregateRootId);
+        const user = await this.entityRepository.findOne(aggregateRootId);
         user.password = newPassword;
 
-        await this.userRepository.save(user);
+        await this.entityRepository.save(user);
     }
 }

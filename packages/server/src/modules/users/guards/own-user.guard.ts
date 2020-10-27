@@ -1,7 +1,7 @@
-import {Permission} from "../models/Permission";
 import {CanActivate, ExecutionContext, Injectable} from "@nestjs/common";
 import {Request} from "express";
 import {User} from "../user.entity";
+import {Permission} from "@sharedKernel";
 
 @Injectable()
 export class OwnUserGuard implements CanActivate {

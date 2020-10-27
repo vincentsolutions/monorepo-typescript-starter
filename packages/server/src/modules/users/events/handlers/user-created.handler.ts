@@ -1,16 +1,16 @@
 import {BaseDomainEventHandler} from "../../../domain/events/handlers/base-domain.event-handler";
 import {UserCreatedEvent} from "../impl/user-created.event";
 import {User} from "../../user.entity";
-import {InjectRepository} from "@nestjs/typeorm";
-import {Repository} from "typeorm/index";
+import {Connection} from "typeorm/index";
 import {EventsHandler} from "@nestjs/cqrs";
+import {UserRepository} from "../../user.repository";
 
 @EventsHandler(UserCreatedEvent)
-export class UserCreatedEventHandler extends BaseDomainEventHandler<UserCreatedEvent>{
+export class UserCreatedEventHandler extends BaseDomainEventHandler<UserCreatedEvent, UserRepository>{
     constructor(
-        @InjectRepository(User) private readonly userRepository: Repository<User>
+        connection: Connection
     ) {
-        super();
+        super(UserRepository, connection);
     }
 
     async handleInternal(event: UserCreatedEvent) {
@@ -25,6 +25,6 @@ export class UserCreatedEventHandler extends BaseDomainEventHandler<UserCreatedE
         newUser.password = params.password;
         newUser.permissions = params.permissions;
 
-        await this.userRepository.save(newUser);
+        await this.entityRepository.save(newUser);
     }
 }

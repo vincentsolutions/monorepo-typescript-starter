@@ -1,6 +1,6 @@
 import {User} from "../user.entity";
 import {BaseModel} from "../../core/base/models/base.model";
-import {Permission} from "./Permission";
+import {Permission} from "@sharedKernel";
 
 export class UserModel extends BaseModel {
     id: string;

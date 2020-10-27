@@ -1,24 +1,23 @@
 import {BaseEventHandler} from "../../../domain/events/handlers/base.event-handler";
 import {UserDeactivatedEvent} from "../impl/user-deactivated.event";
-import {Repository} from "typeorm/index";
-import {User} from "../../user.entity";
+import {Connection} from "typeorm/index";
 import {EventsHandler} from "@nestjs/cqrs";
-import {InjectRepository} from "@nestjs/typeorm";
+import {UserRepository} from "../../user.repository";
 
 @EventsHandler(UserDeactivatedEvent)
-export class UserDeactivatedEventHandler extends BaseEventHandler<UserDeactivatedEvent> {
+export class UserDeactivatedEventHandler extends BaseEventHandler<UserDeactivatedEvent, UserRepository> {
     constructor(
-        @InjectRepository(User) private readonly userRepository: Repository<User>
+        connection: Connection
     ) {
-        super();
+        super(UserRepository, connection);
     }
 
     async handleInternal(event: UserDeactivatedEvent) {
         const { aggregateRootId } = event;
 
-        const user = await this.userRepository.findOne(aggregateRootId);
+        const user = await this.entityRepository.findOne(aggregateRootId);
 
         user.isActive = false;
-        await this.userRepository.save(user);
+        await this.entityRepository.save(user);
     }
 }

@@ -8,12 +8,12 @@ import {UserLastNameUpdatedEvent} from "./events/impl/user-last-name-updated.eve
 import {UserPasswordUpdatedEvent} from "./events/impl/user-password-updated.event";
 import {UserDeactivatedEvent} from "./events/impl/user-deactivated.event";
 import {UserReactivatedEvent} from "./events/impl/user-reactivated.event";
-import {Permission} from "./models/Permission";
 import {UserPermissionsRemovedEvent} from "./events/impl/user-permissions-removed.event";
 import {UserPermissionsAddedEvent} from "./events/impl/user-permissions-added.event";
 import {DomainValidationException} from "../core/exceptions/impl/domain-validation.exception";
 import {BaseDomainEvent} from "../domain/events/impl/base-domain.event";
 import autobind from "autobind-decorator";
+import {Permission} from "@sharedKernel";
 
 export class UserAggregateRoot extends BaseAggregateRoot {
     protected handlers: Map<string, (event: BaseDomainEvent) => void> = new Map<string, (event: BaseDomainEvent) => void>([
