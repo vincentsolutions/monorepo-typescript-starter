@@ -1,11 +1,11 @@
-import {Permission} from "../../../users/models/Permission";
+import {IBaseJwtPayload, IJwtPayload, Permission} from "@sharedKernel";
 
-export class BaseJwtOptions {
+export class BaseJwtPayload implements IBaseJwtPayload {
     readonly sub: string;
     readonly email: string;
 }
 
-export class JwtPayload extends BaseJwtOptions {
+export class JwtPayload extends BaseJwtPayload implements IJwtPayload {
     readonly firstName: string;
     readonly lastName: string;
     readonly permissions: Permission[];

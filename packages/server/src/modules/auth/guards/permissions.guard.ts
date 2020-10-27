@@ -1,8 +1,8 @@
 import {CanActivate, ExecutionContext, Injectable, UnauthorizedException} from "@nestjs/common";
 import {UsersService} from "../../users/users.service";
 import {Reflector} from "@nestjs/core";
-import {Permission} from "../../users/models/Permission";
 import {JwtPermissionMatchMode} from "./jwt-auth.guard";
+import {Permission} from "@sharedKernel";
 
 @Injectable()
 export class PermissionsGuard implements CanActivate {

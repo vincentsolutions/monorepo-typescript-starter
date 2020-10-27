@@ -3,12 +3,9 @@ import {AuthService} from './auth.service';
 import {UsersService} from "../users/users.service";
 import {CryptoService} from "../core/services/crypto.service";
 import {JwtService} from "@nestjs/jwt";
-import {CqrsModule} from "@nestjs/cqrs";
-import {Permission} from "../users/models/Permission";
-import {v4} from "uuid";
-import {User} from "../users/user.entity";
 import {UserMock_JohnDoe} from "../../../test/mocks/user.mocks";
 import {JwtPayload} from "./strategies/jwt/jwt.payload";
+import {Permission} from "@sharedKernel";
 
 describe('AuthService', () => {
     let sut: AuthService;
@@ -73,14 +70,14 @@ describe('AuthService', () => {
 
     describe("signIn(User)", () => {
         it("should return an accessToken given a valid user", async () => {
-            const result = await sut.signIn(mockUser);
+            const result = await sut.getAuthTokens(mockUser);
 
             expect(result).toBeDefined();
             expect(result.accessToken).toBeTruthy();
         });
 
         it("should throw given a null user", async () => {
-            await expect(sut.signIn(null)).rejects.toThrow();
+            await expect(sut.getAuthTokens(null)).rejects.toThrow();
         });
     });
 
