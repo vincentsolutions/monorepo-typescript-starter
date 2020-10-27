@@ -8,7 +8,7 @@ import {
 import {Client, Server, Socket} from "socket.io";
 import {Logger} from "../core/services/logger.service";
 import * as socketIoJwt from 'socketio-jwt';
-import {jwtConstants} from "../auth/constants";
+import {authConstants} from "../auth/constants";
 import {JwtPayload} from "../auth/strategies/jwt/jwt.payload";
 
 @WebSocketGateway(4555)
@@ -40,10 +40,14 @@ export class Gateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDis
     afterInit(server: Server): any {
         server.sockets
             .on('connection', socketIoJwt.authorize({
-                secret: jwtConstants.secret,
+                secret: authConstants.accessToken.secret,
                 timeout: 15000
             }))
-            .on('authenticated', this.handleAuthenticated)
+            .on('reconnection', socketIoJwt.authorize({
+                secret: authConstants.accessToken.secret,
+                timeout: 15000
+            }))
+            .on('authenticated', this.handleAuthenticated);
     }
 
     private handleAuthenticated = (socket: Socket & { decoded_token: JwtPayload }) => {
@@ -60,6 +64,8 @@ export class Gateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDis
     @SubscribeMessage('events')
     private handleEvent(@MessageBody() data: string): string {
         this.logger.log(`Gateway Message Received ('events'): ${data}`);
+
+        this.emit('server_response', 'args');
 
         return data;
     }
