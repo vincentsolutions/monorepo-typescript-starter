@@ -10,6 +10,7 @@ export class ApiClient {
     constructor(axiosConfig: AxiosRequestConfig = {}) {
         this._axiosInstance = axios.create({
             baseURL: 'http://localhost:4551/api/v1',
+            withCredentials: true,
             ...axiosConfig
         });
     }

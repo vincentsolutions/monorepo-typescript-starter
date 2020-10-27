@@ -1,5 +1,6 @@
 import {BaseModel, IBaseModelDto, IBaseModelInput} from "../internal";
-import {computed, observable, reaction} from "mobx";
+import {computed, makeObservable, observable, reaction} from "mobx";
+import { Permission } from "@monorepo/shared-kernel";
 
 export interface IUserInput extends IBaseModelInput {
     firstName: string;
@@ -22,10 +23,12 @@ export class User extends BaseModel<IUserInput, IUserDto> implements IUserDto {
     @observable public lastName: string;
     @observable public email: string;
     @observable public phoneNumber?: string;
-    @observable public readonly permissions: Permission[];
+    @observable public permissions: Permission[];
 
     protected constructor(input: IUserInput, id?: string) {
         super(input, id);
+
+        makeObservable(this);
 
         this.firstName = input.firstName;
         this.lastName = input.lastName;
@@ -59,9 +62,4 @@ export class User extends BaseModel<IUserInput, IUserDto> implements IUserDto {
 
         return model;
     }
-}
-
-export enum Permission {
-    Default,
-    Admin
 }

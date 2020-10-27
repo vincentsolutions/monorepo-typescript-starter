@@ -6,7 +6,10 @@ export {
     Environment, getCurrEnv, stringOrI18n,
 
     // MARK: Utils
-    CacheProvider, CacheItemOptions, Logger, LogLevel, ILoggerOptions, ApiClient,
+    ConfigurationProvider, Logger, LogLevel, ILoggerOptions,
+
+    // MARK: Infrastructure
+    CacheProvider, CacheItemOptions, ApiClient, SocketClient,
 
     // MARK: Models
     BaseModel, IBaseModelDto, IBaseModelInput,
@@ -20,5 +23,5 @@ export {
     BaseStore, BaseCollectionStore, AuthStore, LocalizationStore, UserStore,
 
     // MARK: Localization
-    CurrentLocales, BaseI18nLoader, II18nLoaderProps
+    AvailableLocales, BaseI18nLoader, II18nLoaderProps
 } from './lib/internal';

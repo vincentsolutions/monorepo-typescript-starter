@@ -6,6 +6,8 @@ export interface IUsersApi extends IBaseApi {
     getUser(id: string): Promise<IUserDto | undefined>;
     addUser(user: IUserDto): Promise<void>;
     updateUser(id: string, user: IUserInput): Promise<void>;
+    updateUserFirstName(id: string, firstName: string): Promise<void>;
+    updateUserLastName(id: string, lastName: string): Promise<void>;
     deleteUser(id: string): Promise<void>;
 }
 
@@ -37,6 +39,14 @@ export class UsersApi extends BaseApi implements IUsersApi {
 
     updateUser(id: string, input: IUserInput): Promise<void> {
         return this._apiClient.put(`/Users/${id}`, input);
+    }
+
+    updateUserFirstName(id: string, firstName: string): Promise<void> {
+        return this._apiClient.put(`/Users/${id}/FirstName`, { firstName });
+    }
+
+    updateUserLastName(id: string, lastName: string): Promise<void> {
+        return this._apiClient.put(`/Users/${id}/LastName`, { lastName });
     }
 
     deleteUser(id: string): Promise<void> {

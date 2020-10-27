@@ -3,13 +3,17 @@ export * from './ioc/container';
 export * from './ioc/decorators';
 
 // MARK: Types
-export * from './types/Environment';
+export * from '@monorepo/shared-kernel/lib/enums/Environment';
 export * from './types/Primitives';
 
 // MARK: Utils
-export * from './utils/CacheProvider';
 export * from './utils/Logger';
-export * from './utils/ApiClient';
+export * from './utils/ConfigurationProvider';
+
+// MARK: Infrastructure
+export * from './infrastructure/CacheProvider';
+export * from './infrastructure/ApiClient';
+export * from './infrastructure/SocketClient';
 
 // MARK: Models
 export * from './base/BaseModel';

@@ -4,12 +4,15 @@ import {action, computed, observable, reaction, runInAction} from "mobx";
 
 @injectable()
 export abstract class BaseCollectionStore<TModel extends BaseModel> extends BaseStore {
-    protected readonly _authStore: AuthStore = container.resolve(AuthStore);
+    protected readonly _authStore: AuthStore = container.get(AuthStore);
 
     @observable public loadingStates: Map<string, boolean> = new Map<string, boolean>();
 
     @observable protected _items: TModel[] = [];
     @computed public get items(): TModel[] { return this._items };
+
+    public findItemById = (id: string): TModel | undefined => this.items.find(x => x.id === id);
+    public findItemIndexById = (id: string): number => this.items.findIndex(x => x.id === id);
 
     protected constructor() {
         super();

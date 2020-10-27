@@ -7,10 +7,12 @@
 
   },
   "devDependencies": {
-
+    "@types/jsonwebtoken": "^8.5.0"
   },
   "dependencies": {
-    "@aws-amplify/cache": "^3.1.31"
+    "@aws-amplify/cache": "^3.1.31",
+    "jsonwebtoken": "^8.5.1",
+    "history": "^5.0.0"
   },
   "peerDependencies": {
     "react": "^16.13.1"

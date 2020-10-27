@@ -6,7 +6,7 @@ export class Logger {
             return;
         }
 
-        message = typeof message === "object" ? i18n._(message) : message;
+        message = typeof message === "object" ? i18n._(message) ?? message : message;
         
         switch (logLevel) {
             case LogLevel.Trace: return console.trace(message);

@@ -4,7 +4,7 @@
   "private": true,
   "main": "index.ts",
   "scripts": {
-    "start": "webpack-dev-server --open --config webpack/webpack.config.local.js",
+    "start": " webpack-dev-server --env.local --open --config webpack/webpack.config.local.js",
     "build": "webpack",
     "i18n:add-locale": "lingui add-locale",
     "i18n:extract": "lingui extract",
@@ -12,12 +12,21 @@
   },
   "devDependencies": {
     "webpack-dev-server": "^3.11.0",
-    "@types/socket.io-client": "^1.4.34"
+    "@types/socket.io-client": "^1.4.34",
+    "@types/node": "^14.11.4",
+    "@types/react": "^16.9.51",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-router": "^5.1.8",
+    "@types/react-router-dom": "^5.1.6",
+    "@types/reactstrap": "^8.5.2"
   },
   "dependencies": {
     "core-js": "^3.6.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "reactstrap": "^8.6.0",
     "reflect-metadata": "^0.1.13",
     "socket.io-client": "^2.3.1"
   },

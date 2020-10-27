@@ -1,9 +1,10 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const DotEnv = require('dotenv-webpack');
 const { merge } = require('webpack-merge')
 const path = require('path');
 const common = require('../../../webpack/webpack.common');
+
+const dotenv = require('dotenv').config({path: path.resolve(__dirname, '../../../.local.env')});
 
 module.exports = merge(common, {
     mode: 'development',
@@ -83,13 +84,13 @@ module.exports = merge(common, {
         port: 4550
     },
     plugins: [
+        new webpack.DefinePlugin({
+            "process.env": JSON.stringify(dotenv.parsed)
+        }),
         new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, "../public", "index.html"),
             title: '[LOCAL] Monorepo Web App'
-        }),
-        new DotEnv({
-            path: '../../../.local.env'
         })
     ]
 })
