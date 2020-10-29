@@ -1,14 +1,5 @@
 import {BaseDomainCommand} from "../../../domain/commands/impl/base-domain.command";
-import {Permission} from "@sharedKernel";
-
-export interface ICreateUser {
-    readonly firstName: string;
-    readonly lastName: string;
-    readonly email: string;
-    readonly password: string;
-    readonly phoneNumber?: string;
-    readonly permissions?: Permission[];
-}
+import {Permission, ICreateUser} from "@sharedKernel";
 
 export class CreateUserCommand extends BaseDomainCommand<ICreateUser> implements ICreateUser {
     constructor(

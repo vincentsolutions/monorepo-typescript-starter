@@ -1,8 +1,5 @@
 import {BaseDomainCommand} from "../../../domain/commands/impl/base-domain.command";
-
-export interface IDeactivateUser {
-
-}
+import {IDeactivateUser} from "@sharedKernel";
 
 export class DeactivateUserCommand extends BaseDomainCommand<IDeactivateUser> implements IDeactivateUser {
     constructor(

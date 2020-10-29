@@ -31,8 +31,17 @@ import {EventStoreModule} from "../event-store/event-store.module";
 import {EventStoreService} from "../event-store/event-store.service";
 import {DomainModule} from "../domain/domain.module";
 import {UserAggregateRoot} from "./user.aggregate";
+import {UserLastNameUpdatedEvent} from "./events/impl/user-last-name-updated.event";
+import {UserEmailUpdatedEvent} from "./events/impl/user-email-updated.event";
+import {UserCreatedEvent} from "./events/impl/user-created.event";
+import {UserPhoneNumberUpdatedEvent} from "./events/impl/user-phone-number-updated.event";
+import {UserPasswordUpdatedEvent} from "./events/impl/user-password-updated.event";
+import {UserPermissionsRemovedEvent} from "./events/impl/user-permissions-removed.event";
+import {UserReactivatedEvent} from "./events/impl/user-reactivated.event";
+import {UserFirstNameUpdatedEvent} from "./events/impl/user-first-name-updated.event";
+import {UserDeactivatedEvent} from "./events/impl/user-deactivated.event";
+import {UserPermissionsAddedEvent} from "./events/impl/user-permissions-added.event";
 import {UserRepository} from "./user.repository";
-import {getConnection} from "typeorm/index";
 
 export const CommandHandlers = [
     CreateUserCommandHandler, UpdateUserFirstNameCommandHandler, UpdateUserLastNameCommandHandler,

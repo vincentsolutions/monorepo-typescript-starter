@@ -1,6 +1,5 @@
 import {UserAggregateRoot} from "./user.aggregate";
 import {v4} from "uuid";
-import {ICreateUser} from "./commands/impl/create-user.command";
 import {UserCreatedEvent} from "./events/impl/user-created.event";
 import {UserEmailUpdatedEvent} from "./events/impl/user-email-updated.event";
 import {checkEventInAggregate} from "../../../test/base/aggregate.test-helpers";
@@ -10,6 +9,7 @@ import {UserReactivatedEvent} from "./events/impl/user-reactivated.event";
 import {UserPermissionsAddedEvent} from "./events/impl/user-permissions-added.event";
 import {UserPermissionsRemovedEvent} from "./events/impl/user-permissions-removed.event";
 import {Permission} from "@sharedKernel";
+import {ICreateUser} from "@sharedKernel";
 
 describe(UserAggregateRoot, () => {
 

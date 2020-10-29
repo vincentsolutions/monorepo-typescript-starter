@@ -1,4 +1,4 @@
-import {CreateUserCommand, ICreateUser} from "../impl/create-user.command";
+import {CreateUserCommand} from "../impl/create-user.command";
 import {BaseCommandHandler} from "../../../domain/commands/handlers/base.command-handler";
 import {CommandHandler} from "@nestjs/cqrs";
 import {UserAggregateRoot} from "../../user.aggregate";
@@ -6,6 +6,7 @@ import {DomainValidationException} from "../../../core/exceptions/impl/domain-va
 import {User} from "../../user.entity";
 import {Connection} from "typeorm/index";
 import {CryptoService} from "../../../core/services/crypto.service";
+import {ICreateUser} from "@sharedKernel";
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserCommandHandler extends BaseCommandHandler<CreateUserCommand, User, UserAggregateRoot> {

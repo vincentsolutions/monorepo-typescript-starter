@@ -1,9 +1,5 @@
 import {BaseDomainCommand} from "../../../domain/commands/impl/base-domain.command";
-
-export interface IUpdateUserPassword {
-    currentPassword: string;
-    newPassword: string;
-}
+import {IUpdateUserPassword} from "@sharedKernel";
 
 export class UpdateUserPasswordCommand extends BaseDomainCommand<IUpdateUserPassword> implements IUpdateUserPassword {
     constructor(

@@ -1,11 +1,4 @@
-import {BaseDomainEvent} from "../../../domain/events/impl/base-domain.event";
-import {IUpdateUserEmail} from "../../commands/impl/update-user-email.command";
+import {BaseUserEvent} from "../../user.base-event";
+import {IUpdateUserEmail} from "@sharedKernel";
 
-export class UserEmailUpdatedEvent extends BaseDomainEvent<IUpdateUserEmail> {
-    constructor(
-        aggregateRootId: string,
-        params: IUpdateUserEmail
-    ) {
-        super(aggregateRootId, params);
-    }
-}
+export class UserEmailUpdatedEvent extends BaseUserEvent<IUpdateUserEmail> {}

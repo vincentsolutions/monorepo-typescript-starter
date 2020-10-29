@@ -1,11 +1,4 @@
-import {BaseDomainEvent} from "../../../domain/events/impl/base-domain.event";
-import {ICreateUser} from "../../commands/impl/create-user.command";
+import {BaseUserEvent} from "../../user.base-event";
+import {ICreateUser} from "@sharedKernel";
 
-export class UserCreatedEvent extends BaseDomainEvent<ICreateUser> {
-    constructor(
-        aggregateRootId: string,
-        params: ICreateUser
-    ) {
-        super(aggregateRootId, params);
-    }
-}
+export class UserCreatedEvent extends BaseUserEvent<ICreateUser> {}

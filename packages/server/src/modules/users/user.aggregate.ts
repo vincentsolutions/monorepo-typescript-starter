@@ -1,6 +1,5 @@
 import {BaseAggregateRoot} from "../domain/aggregate/base.aggregate-root";
 import {UserFirstNameUpdatedEvent} from "./events/impl/user-first-name-updated.event";
-import {ICreateUser} from "./commands/impl/create-user.command";
 import {UserCreatedEvent} from "./events/impl/user-created.event";
 import {UserPhoneNumberUpdatedEvent} from "./events/impl/user-phone-number-updated.event";
 import {UserEmailUpdatedEvent} from "./events/impl/user-email-updated.event";
@@ -14,6 +13,7 @@ import {DomainValidationException} from "../core/exceptions/impl/domain-validati
 import {BaseDomainEvent} from "../domain/events/impl/base-domain.event";
 import autobind from "autobind-decorator";
 import {Permission} from "@sharedKernel";
+import {ICreateUser} from "@sharedKernel";
 
 export class UserAggregateRoot extends BaseAggregateRoot {
     protected handlers: Map<string, (event: BaseDomainEvent) => void> = new Map<string, (event: BaseDomainEvent) => void>([

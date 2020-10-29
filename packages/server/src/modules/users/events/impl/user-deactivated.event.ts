@@ -1,10 +1,4 @@
-import {BaseDomainEvent} from "../../../domain/events/impl/base-domain.event";
-import {IDeactivateUser} from "../../commands/impl/deactivate-user.command";
+import {BaseUserEvent} from "../../user.base-event";
+import {IDeactivateUser} from "@sharedKernel";
 
-export class UserDeactivatedEvent extends BaseDomainEvent<IDeactivateUser> {
-    constructor(
-        aggregateRootId: string
-    ) {
-        super(aggregateRootId);
-    }
-}
+export class UserDeactivatedEvent extends BaseUserEvent<IDeactivateUser> {}

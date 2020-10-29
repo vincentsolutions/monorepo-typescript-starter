@@ -1,8 +1,5 @@
 import {BaseDomainCommand} from "../../../domain/commands/impl/base-domain.command";
-
-export interface IUpdateUserEmail {
-    email: string;
-}
+import {IUpdateUserEmail} from "@sharedKernel";
 
 export class UpdateUserEmailCommand extends BaseDomainCommand<IUpdateUserEmail> implements IUpdateUserEmail {
     constructor(

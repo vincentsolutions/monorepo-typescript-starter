@@ -3,16 +3,13 @@ import {injectable} from "inversify";
 import {action, computed, makeObservable} from "mobx";
 import {Symbols} from "../ioc/symbols";
 import {
-    UserCreatedEvent,
-    UserDeactivatedEvent,
-    UserEmailUpdatedEvent,
-    UserFirstNameUpdatedEvent,
-    UserLastNameUpdatedEvent,
-    UserPermissionsAddedEvent,
-    UserPermissionsRemovedEvent,
-    UserPhoneNumberUpdatedEvent,
-    UserReactivatedEvent
-} from "@monorepo/server";
+    IAddUserPermissions,
+    ICreateUser,
+    IDeactivateUser,
+    IDomainEvent,
+    IReactivateUser, IRemoveUserPermissions, IUpdateUserEmail,
+    IUpdateUserFirstName, IUpdateUserLastName, IUpdateUserPhoneNumber
+} from "@monorepo/shared-kernel";
 
 @injectable()
 export class UserStore extends BaseCollectionStore<User> {
@@ -61,23 +58,23 @@ export class UserStore extends BaseCollectionStore<User> {
 
     protected subscribeToEvents(): void {
         this._socketClient.subscribeToEvents({
-            [UserCreatedEvent.name]: this.onUserCreatedEvent,
-            [UserDeactivatedEvent.name]: this.onUserDeactivatedEvent,
-            [UserReactivatedEvent.name]: this.onUserReactivatedEvent,
-            [UserFirstNameUpdatedEvent.name]: this.onUserFirstNameUpdatedEvent,
-            [UserLastNameUpdatedEvent.name]: this.onUserLastNameUpdatedEvent,
-            [UserEmailUpdatedEvent.name]: this.onUserEmailUpdatedEvent,
-            [UserPhoneNumberUpdatedEvent.name]: this.onUserPhoneNumberUpdatedEvent,
-            [UserPermissionsAddedEvent.name]: this.onUserPermissionsAddedEvent,
-            [UserPermissionsRemovedEvent.name]: this.onUserPermissionsRemovedEvent
+            ['UserCreatedEvent']: this.onUserCreatedEvent,
+            ['UserDeactivatedEvent']: this.onUserDeactivatedEvent,
+            ['UserReactivatedEvent']: this.onUserReactivatedEvent,
+            ['UserFirstNameUpdatedEvent']: this.onUserFirstNameUpdatedEvent,
+            ['UserLastNameUpdatedEvent']: this.onUserLastNameUpdatedEvent,
+            ['UserEmailUpdatedEvent']: this.onUserEmailUpdatedEvent,
+            ['UserPhoneNumberUpdatedEvent']: this.onUserPhoneNumberUpdatedEvent,
+            ['UserPasswordUpdatedEvent']: this.onUserPermissionsAddedEvent,
+            ['UserPermissionsAddedEvent']: this.onUserPermissionsRemovedEvent
         });
     }
 
-    @action.bound private onUserCreatedEvent(event: UserCreatedEvent) {
+    @action.bound private onUserCreatedEvent(event: IDomainEvent<ICreateUser>) {
 
     }
 
-    @action.bound private onUserDeactivatedEvent(event: UserDeactivatedEvent) {
+    @action.bound private onUserDeactivatedEvent(event: IDomainEvent<IDeactivateUser>) {
         const userIndex = this.findItemIndexById(event.aggregateRootId);
 
         if (userIndex === -1) {
@@ -87,7 +84,7 @@ export class UserStore extends BaseCollectionStore<User> {
         this._items.splice(userIndex, 1);
     }
     
-    @action.bound private onUserReactivatedEvent(event: UserReactivatedEvent) {
+    @action.bound private onUserReactivatedEvent(event: IDomainEvent<IReactivateUser>) {
         const userIndex = this.findItemIndexById(event.aggregateRootId);
 
         if (userIndex === -1) {
@@ -97,7 +94,7 @@ export class UserStore extends BaseCollectionStore<User> {
         this.loadItems();
     }
     
-    @action.bound private onUserFirstNameUpdatedEvent(event: UserFirstNameUpdatedEvent) {
+    @action.bound private onUserFirstNameUpdatedEvent(event: IDomainEvent<IUpdateUserFirstName>) {
         const userIndex = this.findItemIndexById(event.aggregateRootId);
 
         if (userIndex === -1) {
@@ -107,7 +104,7 @@ export class UserStore extends BaseCollectionStore<User> {
         this._items[userIndex].firstName = event.params.firstName;
     }
 
-    @action.bound private onUserLastNameUpdatedEvent(event: UserLastNameUpdatedEvent) {
+    @action.bound private onUserLastNameUpdatedEvent(event: IDomainEvent<IUpdateUserLastName>) {
         const userIndex = this.findItemIndexById(event.aggregateRootId);
 
         if (userIndex === -1) {
@@ -117,7 +114,7 @@ export class UserStore extends BaseCollectionStore<User> {
         this._items[userIndex].lastName = event.params.lastName;
     }
 
-    @action.bound private onUserEmailUpdatedEvent(event: UserEmailUpdatedEvent) {
+    @action.bound private onUserEmailUpdatedEvent(event: IDomainEvent<IUpdateUserEmail>) {
         const userIndex = this.findItemIndexById(event.aggregateRootId);
 
         if (userIndex === -1) {
@@ -127,7 +124,7 @@ export class UserStore extends BaseCollectionStore<User> {
         this._items[userIndex].email = event.params.email;
     }
 
-    @action.bound private onUserPhoneNumberUpdatedEvent(event: UserPhoneNumberUpdatedEvent) {
+    @action.bound private onUserPhoneNumberUpdatedEvent(event: IDomainEvent<IUpdateUserPhoneNumber>) {
         const userIndex = this.findItemIndexById(event.aggregateRootId);
 
         if (userIndex === -1) {
@@ -137,7 +134,7 @@ export class UserStore extends BaseCollectionStore<User> {
         this._items[userIndex].phoneNumber = event.params.phoneNumber;
     }
 
-    @action.bound private onUserPermissionsAddedEvent(event: UserPermissionsAddedEvent) {
+    @action.bound private onUserPermissionsAddedEvent(event: IDomainEvent<IAddUserPermissions>) {
         const userIndex = this.findItemIndexById(event.aggregateRootId);
 
         if (userIndex === -1) {
@@ -147,7 +144,7 @@ export class UserStore extends BaseCollectionStore<User> {
         this._items[userIndex].permissions.push(...event.params.permissionsToAdd);
     }
 
-    @action.bound private onUserPermissionsRemovedEvent(event: UserPermissionsRemovedEvent) {
+    @action.bound private onUserPermissionsRemovedEvent(event: IDomainEvent<IRemoveUserPermissions>) {
         const userIndex = this.findItemIndexById(event.aggregateRootId);
 
         if (userIndex === -1) {

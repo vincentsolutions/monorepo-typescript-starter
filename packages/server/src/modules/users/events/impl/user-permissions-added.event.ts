@@ -1,11 +1,4 @@
-import {BaseDomainEvent} from "../../../domain/events/impl/base-domain.event";
-import {IAddUserPermissions} from "../../commands/impl/add-user-permissions.command";
+import {BaseUserEvent} from "../../user.base-event";
+import {IAddUserPermissions} from "@sharedKernel";
 
-export class UserPermissionsAddedEvent extends BaseDomainEvent<IAddUserPermissions> {
-    constructor(
-        aggregateRootId: string,
-        params: IAddUserPermissions
-    ) {
-        super(aggregateRootId, params);
-    }
-}
+export class UserPermissionsAddedEvent extends BaseUserEvent<IAddUserPermissions> {}

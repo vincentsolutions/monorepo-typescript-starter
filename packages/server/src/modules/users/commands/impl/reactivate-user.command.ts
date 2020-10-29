@@ -1,8 +1,5 @@
 import {BaseDomainCommand} from "../../../domain/commands/impl/base-domain.command";
-
-export interface IReactivateUser {
-
-}
+import {IReactivateUser} from "@sharedKernel";
 
 export class ReactivateUserCommand extends BaseDomainCommand<IReactivateUser> implements IReactivateUser {
     constructor(

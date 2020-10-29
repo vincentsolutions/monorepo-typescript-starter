@@ -1,9 +1,5 @@
 import {BaseDomainCommand} from "../../../domain/commands/impl/base-domain.command";
-import {Permission} from "@sharedKernel";
-
-export interface IRemoveUserPermissions {
-    permissionsToRemove: Permission[];
-}
+import {Permission, IRemoveUserPermissions} from "@sharedKernel";
 
 export class RemoveUserPermissionsCommand extends BaseDomainCommand<IRemoveUserPermissions> implements IRemoveUserPermissions {
     constructor(

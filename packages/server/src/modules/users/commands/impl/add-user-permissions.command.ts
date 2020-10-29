@@ -1,9 +1,5 @@
 import {BaseDomainCommand} from "../../../domain/commands/impl/base-domain.command";
-import {Permission} from "@sharedKernel";
-
-export interface IAddUserPermissions {
-    permissionsToAdd: Permission[];
-}
+import {Permission, IAddUserPermissions} from "@sharedKernel";
 
 export class AddUserPermissionsCommand extends BaseDomainCommand<IAddUserPermissions> implements IAddUserPermissions {
     constructor(
