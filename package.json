@@ -5,8 +5,7 @@
   "license": "MIT",
   "author": "Charles Eric Vincent",
   "workspaces": {
-    "packages": [ "packages/*" ],
-    "nohoist": [ "**/typeorm", "**/typeorm/**" ]
+    "packages": [ "packages/*" ]
   },
   "scripts": {
     "typeorm": "ts-node -r tsconfig-paths/register node_modules/typeorm/cli.js",
