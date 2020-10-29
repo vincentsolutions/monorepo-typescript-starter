@@ -3,10 +3,9 @@ import {Inject} from "@nestjs/common";
 import {Logger} from "../../../core/services/logger.service";
 import {Gateway} from "../../../gateway/gateway.service";
 import {BaseDomainEvent} from "../impl/base-domain.event";
-import {Transaction} from "../../../core/decorators/transaction.decorator";
 import {Connection, ObjectType} from "typeorm/index";
-import {BaseRepository} from "../../../core/base/repositories/base.repository";
 import {DomainService} from "../../services/domain.service";
+import {BaseRepository} from "../../../core/base/repositories/base.repository";
 
 export abstract class BaseEventHandler<TEvent extends BaseDomainEvent, TRepository extends BaseRepository> implements IEventHandler<TEvent> {
     @Inject() protected readonly logger: Logger;
@@ -16,15 +15,15 @@ export abstract class BaseEventHandler<TEvent extends BaseDomainEvent, TReposito
     protected readonly entityRepository: TRepository
 
     protected constructor(
-        repository: ObjectType<TRepository>,
+        repositoryType: ObjectType<TRepository>,
         connection: Connection
     ) {
-        this.entityRepository = connection.getCustomRepository(repository);
+        this.entityRepository = connection.getCustomRepository(repositoryType);
     }
 
     protected abstract handleInternal(event: TEvent): Promise<void>;
 
-    @Transaction()
+    // @Transaction()
     public async handle(event: TEvent) {
         this.logger.log('Starting Event Handling...', this.getContextName());
 
@@ -37,13 +36,6 @@ export abstract class BaseEventHandler<TEvent extends BaseDomainEvent, TReposito
             await this.domainService.evict(event.aggregateRootId);
 
             throw e;
-        }
-
-        try {
-            this.gateway.emitToUser(event.aggregateRootId, Object.getPrototypeOf(event).constructor.name, JSON.stringify(event));
-        } catch (e) {
-            this.logger.warn('Error while emitting event from gateway to user', this.getContextName());
-            this.logger.warn(e.getInfo?.() ?? e.message, this.getContextName());
         }
 
         this.logger.log('Completed Event Handling.', this.getContextName());

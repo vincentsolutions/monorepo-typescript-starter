@@ -74,7 +74,11 @@ export class Gateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDis
         this.server.emit(event, ...args);
     }
 
-    public emitToUser(userId: string, event: string, ...args: String[]) {
+    public emitToUsers(userIds: string[], event: string, ...args: string[]) {
+        userIds.forEach(userId => this.emitToUser(userId, event, ...args));
+    }
+
+    public emitToUser(userId: string, event: string, ...args: string[]) {
         const clientIdsForUserId = this.userClientsMap.get(userId);
 
         if (!clientIdsForUserId || clientIdsForUserId.length === 0) {

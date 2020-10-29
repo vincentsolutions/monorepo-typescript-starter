@@ -6,7 +6,7 @@ import {Connection, Repository} from "typeorm/index";
 import * as ormConfig from './ormconfig';
 import {AuthModule} from "./modules/auth/auth.module";
 import {User} from "./modules/users/user.entity";
-import {CommandBus, CqrsModule} from "@nestjs/cqrs";
+import {CommandBus, CqrsModule, EventBus} from "@nestjs/cqrs";
 import {CreateUserCommand} from "./modules/users/commands/impl/create-user.command";
 import {DomainModule} from './modules/domain/domain.module';
 import {EventStoreModule} from './modules/event-store/event-store.module';
@@ -50,6 +50,7 @@ export class AppModule implements OnModuleInit, NestModule {
     constructor(
         private readonly connection: Connection,
         private readonly commandBus: CommandBus,
+        private readonly eventBus: EventBus,
         private readonly eventStoreService: EventStoreService
     ) {
         this.userRepository = connection.getRepository(User);
@@ -57,6 +58,9 @@ export class AppModule implements OnModuleInit, NestModule {
 
     async onModuleInit() {
         await this.ensureSuperAdminExists();
+
+        // @ts-ignore
+        this.eventBus.publisher = this.eventStoreService;
     }
 
     async ensureSuperAdminExists() {

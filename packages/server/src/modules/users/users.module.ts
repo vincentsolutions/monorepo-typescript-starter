@@ -82,11 +82,20 @@ export class UsersModule implements OnModuleInit {
     ) {
     }
 
-    onModuleInit(): any {
-        this.eventStoreService.setEventHandlers({});
-        this.eventStoreService.bridgeEventsTo((this.eventBus as any).subject$, UserAggregateRoot.constructor.name);
-        // @ts-ignore
-        // this.eventBus.publisher = this.eventStoreService;
+    async onModuleInit(): Promise<any> {
+        this.eventStoreService.setEventFactories([
+            [ UserCreatedEvent.name, data => new UserCreatedEvent(data.aggregateRootId, data.params, data.version) ],
+            [ UserDeactivatedEvent.name, data => new UserDeactivatedEvent(data.aggregateRootId, undefined, data.version) ],
+            [ UserReactivatedEvent.name, data => new UserReactivatedEvent(data.aggregateRootId, undefined, data.version) ],
+            [ UserFirstNameUpdatedEvent.name, data => new UserFirstNameUpdatedEvent(data.aggregateRootId, data.params, data.version) ],
+            [ UserLastNameUpdatedEvent.name, data => new UserLastNameUpdatedEvent(data.aggregateRootId, data.params, data.version) ],
+            [ UserEmailUpdatedEvent.name, data => new UserEmailUpdatedEvent(data.aggregateRootId, data.params, data.version) ],
+            [ UserPhoneNumberUpdatedEvent.name, data => new UserPhoneNumberUpdatedEvent(data.aggregateRootId, data.params, data.version) ],
+            [ UserPasswordUpdatedEvent.name, data => new UserPasswordUpdatedEvent(data.aggregateRootId, data.params, data.version) ],
+            [ UserPermissionsAddedEvent.name, data => new UserPermissionsAddedEvent(data.aggregateRootId, data.params, data.version) ],
+            [ UserPermissionsRemovedEvent.name, data => new UserPermissionsRemovedEvent(data.aggregateRootId, data.params, data.version) ]
+        ])
+        await this.eventStoreService.bridgeEventsTo((this.eventBus as any).subject$, UserAggregateRoot.name);
         // this.eventBus.register(EventHandlers);
         // this.commandBus.register(CommandHandlers);
     }

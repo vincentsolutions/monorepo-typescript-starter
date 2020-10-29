@@ -5,18 +5,17 @@ import {Config} from "../core/config/config";
 import * as http from "http";
 import {Event} from "geteventstore-promise/index";
 import {Subject} from "rxjs";
-import xml2js from 'xml2js';
-import {EventBus} from "@nestjs/cqrs";
-import {BaseAggregateRoot} from "../domain/aggregate/base.aggregate-root";
+import * as xml2js from 'xml2js';
 import {Logger} from "../core/services/logger.service";
+
+export type DomainEventFactoryMethod = (data: any) => BaseDomainEvent;
 
 @Injectable()
 export class EventStoreService {
-    private eventHandlers: object;
+    private eventFactories: Map<string, DomainEventFactoryMethod> = new Map<string, DomainEventFactoryMethod>();
 
     constructor(
         private readonly eventStore: EventStore,
-        private readonly eventBus: EventBus,
         private readonly logger: Logger,
         private readonly config: Config
     ) {
@@ -33,16 +32,12 @@ export class EventStoreService {
             `://${this.config.EVENT_STORE_SETTINGS.hostname}:${this.config.EVENT_STORE_SETTINGS.httpPort}/streams/`;
     }
 
-    async publish<T extends BaseDomainEvent>(event: T, aggregate: BaseAggregateRoot): Promise<any> {
-        const aggregateName = Object.getPrototypeOf(aggregate).constructor.name;
-        const streamName = `${aggregateName}-${event.aggregateRootId}`;
+    async publish<T extends BaseDomainEvent>(event: T): Promise<any> {
         const eventType = event.constructor.name;
 
         try {
-            await this.eventStore.client.writeEvent(streamName, eventType, event);
-            await this.eventBus.publish(event);
-
-            aggregate.updateVersion(event.version);
+            await this.eventStore.client.writeEvent(event.streamName, eventType, event);
+            // await this.eventBus.publish(event);
         } catch (e) {
             this.logger.error(e);
         }
@@ -55,54 +50,59 @@ export class EventStoreService {
         return events.map(x => BaseDomainEvent.fromEventStore(x));
     }
 
-    setEventHandlers(eventHandlers: object) {
-        this.eventHandlers = eventHandlers;
+    setEventFactories(eventHandlers: Array<[ string, DomainEventFactoryMethod ]>) {
+        for (const [k, v] of eventHandlers) {
+            this.eventFactories.set(k, v);
+        }
     }
 
-    bridgeEventsTo<T extends BaseDomainEvent>(subject: Subject<T>, aggregateName: string): any {
+    async bridgeEventsTo<T extends BaseDomainEvent>(subject: Subject<T>, aggregateName: string): Promise<any> {
         const streamName = `$ce-${aggregateName}`;
 
-        const onEvent = async (subscription, event: Event) => {
-            console.log('onEvent: ', subscription, event);
-            const eventUrl = this.eventStoreHostUrl + `${(event.metadata as any).$O}/${(event.data as any).split('@')[0]}`;
+        const onEvent = (subscription, event: Event) => {
+            const eventUrl = this.eventStoreHostUrl + `${(event.metadata as any).$o}/${(event.data as any).split('@')[0]}`;
+            const authString = `${this.config.EVENT_STORE_SETTINGS.credentials.username}:${this.config.EVENT_STORE_SETTINGS.credentials.password}`;
 
-            http.get(eventUrl, res => {
+            http.get(eventUrl, { auth: authString }, res => {
                 res.setEncoding('utf8');
                 let rawData = '';
                 res.on('data', chunk => {
                     rawData += chunk;
                 });
                 res.on('end', () => {
-                    xml2js.parseString(rawData, (err, result) => {
+                    xml2js.parseString(rawData, { explicitArray: false }, (err, result) => {
                         if (err) {
                             this.logger.error(err);
                             return;
                         }
 
-                        const content = result['atom:entry']['atom:content'][0];
-                        const eventType = content.eventType[0];
-                        const data = content.data[0];
-                        event = this.eventHandlers[eventType](...Object.values(data));
+                        const content = result['atom:entry']['atom:content'];
+                        const eventType = content.eventType;
+                        const data = content.data;
+
+                        // @ts-ignore
+                        event = this.eventFactories.get(eventType)?.(data);
                         subject.next(event as any);
                     })
                 })
             });
-            const onDropped = (subscription, reason, error) => {
-                this.logger.error(subscription);
-                this.logger.error(reason);
-                this.logger.error(error);
-            }
+        };
 
-            try {
-                await this.eventStore.client.subscribeToStream(
-                    streamName,
-                    onEvent,
-                    onDropped,
-                    false
-                );
-            } catch (e) {
-                this.logger.error(e);
-            }
+        const onDropped = (subscription, reason, error) => {
+            this.logger.error(subscription);
+            this.logger.error(reason);
+            this.logger.error(error);
+        }
+
+        try {
+            await this.eventStore.client.subscribeToStream(
+                streamName,
+                onEvent,
+                onDropped,
+                false
+            );
+        } catch (e) {
+            this.logger.error(e);
         }
     }
 }

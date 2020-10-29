@@ -1,11 +1,16 @@
-import {Inject} from "@nestjs/common";
+import {Inject, Injectable, Scope} from "@nestjs/common";
 import {AggregateRootConstructor, BaseAggregateRoot} from "../aggregate/base.aggregate-root";
 import {BaseDomainCommand} from "../commands/impl/base-domain.command";
 import {AggregateSnapshotService} from "./aggregate-snapshot.service";
 import {BaseDomainEvent} from "../events/impl/base-domain.event";
 import {EventStoreService} from "../../event-store/event-store.service";
 import {Logger} from "../../core/services/logger.service";
+import {REQUEST} from "@nestjs/core";
+import {Request} from "express";
+import {User} from "../../users/user.entity";
+import {EventBus} from "@nestjs/cqrs";
 
+@Injectable()
 export class DomainService {
     private readonly _cache: Map<string, BaseAggregateRoot> = new Map<string, BaseAggregateRoot>();
 
@@ -13,6 +18,7 @@ export class DomainService {
         private readonly logger: Logger,
         private readonly snapshotService: AggregateSnapshotService,
         @Inject(EventStoreService) private readonly eventStoreService: EventStoreService,
+        private readonly eventBus: EventBus
     ) {
 
     }
@@ -23,8 +29,15 @@ export class DomainService {
         const uncommittedEvents = aggregate.getUncommittedChanges().slice();
         aggregate.markChangesAsCommitted();
 
+        this.logger.log(`Processing ${uncommittedEvents.length} events`, DomainService.name);
+
         for (const event of uncommittedEvents) {
-            await this.eventStoreService.publish(event, aggregate);
+            event.date = new Date().toISOString();
+            // event.byUserId = (this.request?.user as User)?.id;
+
+            await this.eventBus.publish(event);
+
+            aggregate.updateVersion(event.version);
         }
 
         if (aggregate.version !== 0) { // && aggregate.version % 100 === 0) {

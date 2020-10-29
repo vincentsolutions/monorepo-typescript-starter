@@ -67,7 +67,7 @@ export class UsersController extends BaseApiController {
 
     @Post()
     async create(@Body(new DefaultValidationPipe()) dto: CreateUserDto) {
-        this.userService.create(dto.firstName, dto.lastName, dto.email, dto.password, dto.phoneNumber);
+        await this.userService.create(dto.firstName, dto.lastName, dto.email, dto.password, dto.phoneNumber);
     }
 
     @Put(':id/firstName')
@@ -75,7 +75,7 @@ export class UsersController extends BaseApiController {
         @Param("id") id: string,
         @Body("firstName") firstName: string
     ) {
-        this.userService.updateFirstName(id, firstName);
+        await this.userService.updateFirstName(id, firstName);
     }
 
     @Put(':id/lastName')
@@ -83,7 +83,7 @@ export class UsersController extends BaseApiController {
         @Param("id") id: string,
         @Body("lastName") lastName: string
     ) {
-        this.userService.updateLastName(id, lastName);
+        await this.userService.updateLastName(id, lastName);
     }
 
     @Put(':id/email')
@@ -91,7 +91,7 @@ export class UsersController extends BaseApiController {
         @Param('id') id: string,
         @Body("email") email: string
     ) {
-        this.userService.updateEmail(id, email);
+        await this.userService.updateEmail(id, email);
     }
 
     @Put(':id/password')
@@ -99,7 +99,7 @@ export class UsersController extends BaseApiController {
         @Param('id') id: string,
         @Body(new DefaultValidationPipe()) dto: UpdatePasswordDto
     ) {
-        this.userService.updatePassword(id, dto)
+        await this.userService.updatePassword(id, dto)
     }
 
     @Put(':id/phoneNumber')
@@ -107,7 +107,7 @@ export class UsersController extends BaseApiController {
         @Param('id') id: string,
         @Body('phoneNumber') phoneNumber: string
     ) {
-        this.userService.updatePhoneNumber(id, phoneNumber);
+        await this.userService.updatePhoneNumber(id, phoneNumber);
     }
 
     @Put(':id/reactivate')
@@ -116,7 +116,7 @@ export class UsersController extends BaseApiController {
     async reactivate(
         @Param('id') id: string
     ) {
-        this.userService.reactivate(id);
+        await this.userService.reactivate(id);
     }
 
     @Put(':id/deactivate')
@@ -125,7 +125,7 @@ export class UsersController extends BaseApiController {
     async deactivate(
         @Param('id') id: string
     ) {
-        this.userService.deactivate(id);
+        await this.userService.deactivate(id);
     }
 
     @Post(':id/permissions')
@@ -135,7 +135,7 @@ export class UsersController extends BaseApiController {
         @Param('id') id: string,
         @Body('permissions') permissions: Permission[]
     ) {
-        this.userService.addPermissions(id, permissions);
+        await this.userService.addPermissions(id, permissions);
     }
 
     @Delete(':id/permissions')
@@ -145,6 +145,6 @@ export class UsersController extends BaseApiController {
         @Param('id') id: string,
         @Body('permissions') permissions: Permission[]
     ) {
-        this.userService.removePermissions(id, permissions);
+        await this.userService.removePermissions(id, permissions);
     }
 }
