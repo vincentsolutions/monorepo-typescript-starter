@@ -8,7 +8,7 @@ import {
 import {Client, Server, Socket} from "socket.io";
 import {Logger} from "../core/services/logger.service";
 import * as socketIoJwt from 'socketio-jwt';
-import {authConstants} from "../auth/constants";
+import {authConstants} from "../auth/auth.constants";
 import {JwtPayload} from "../auth/strategies/jwt/jwt.payload";
 
 @WebSocketGateway(4555)

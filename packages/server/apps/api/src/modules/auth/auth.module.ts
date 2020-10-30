@@ -5,7 +5,7 @@ import {UsersModule} from "../users/users.module";
 import {PassportModule} from "@nestjs/passport";
 import {LocalStrategy} from "./strategies/local/local.strategy";
 import {JwtModule} from "@nestjs/jwt";
-import {authConstants} from "./constants";
+import {authConstants} from "./auth.constants";
 import {JwtStrategy} from "./strategies/jwt/jwt.strategy";
 import {CqrsModule} from "@nestjs/cqrs";
 import {TypeOrmModule} from "@nestjs/typeorm";

@@ -6,7 +6,7 @@ import {Request} from "express";
 import {User} from "../../../users/user.entity";
 import {Logger} from "../../../core/services/logger.service";
 import {TokenService} from "../../services/token.service";
-import {authConstants} from "../../constants";
+import {authConstants} from "../../auth.constants";
 
 @Injectable()
 export class RefreshTokenStrategy extends PassportStrategy(Strategy, 'refresh-token') {

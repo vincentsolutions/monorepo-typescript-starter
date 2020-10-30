@@ -8,7 +8,7 @@ import * as moment from "moment";
 import {Moment} from 'moment';
 import {Config} from "../../core/config/config";
 import {Environment} from "@sharedKernel";
-import {authConstants} from "../constants";
+import {authConstants} from "../auth.constants";
 import {RefreshTokenRepository} from "../repositories/refresh-token.repository";
 
 @Injectable()

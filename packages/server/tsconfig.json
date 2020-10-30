@@ -15,11 +15,11 @@
       "@sharedKernel": [
         "../shared-kernel/index"
       ],
-      "@server/monorepo": [
-        "libs/monorepo/src"
+      "@server/core": [
+        "libs/core/src"
       ],
-      "@server/monorepo/*": [
-        "libs/monorepo/src/*"
+      "@server/core/*": [
+        "libs/core/src/*"
       ]
     }
   },

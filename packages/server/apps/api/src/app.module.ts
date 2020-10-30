@@ -17,10 +17,13 @@ import {LoggingInterceptor} from "./modules/core/interceptors/logging.intercepto
 import {GatewayModule} from './modules/gateway/gateway.module';
 import {Permission} from "@sharedKernel";
 import {TransactionMiddleware} from "./modules/core/middlewares/transaction.middleware";
+import {BullModule} from "@nestjs/bull";
+import {coreConstants} from "./modules/core/core.constants";
 
 @Module({
     imports: [
         TypeOrmModule.forRoot(ormConfig),
+        BullModule.forRoot({ redis: coreConstants.redisSettings }),
         CqrsModule,
         EventStoreModule.forFeature(),
         CoreModule,

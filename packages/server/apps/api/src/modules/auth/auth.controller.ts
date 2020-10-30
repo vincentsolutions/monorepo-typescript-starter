@@ -6,7 +6,7 @@ import {SignUpDto} from "./dto/sign-up.dto";
 import {BaseApiController} from "../core/base/controllers/base-api.controller";
 import {RefreshTokenAuthGuard} from "./guards/refresh-token-auth.guard";
 import {Response} from "express";
-import {authConstants} from "./constants";
+import {authConstants} from "./auth.constants";
 
 @Controller('auth')
 export class AuthController extends BaseApiController {

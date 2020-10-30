@@ -12,6 +12,3 @@ export const authConstants = {
     }
 }
 
-export const coreConstants = {
-    transactionContextNamespace: "__cls__context"
-}

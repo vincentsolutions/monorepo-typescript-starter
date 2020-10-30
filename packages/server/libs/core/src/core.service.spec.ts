@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { MonorepoService } from './monorepo.service';
+import { CoreService } from './core.service';
 
-describe('MonorepoService', () => {
-  let service: MonorepoService;
+describe('CoreService', () => {
+  let service: CoreService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [MonorepoService],
+      providers: [CoreService],
     }).compile();
 
-    service = module.get<MonorepoService>(MonorepoService);
+    service = module.get<CoreService>(CoreService);
   });
 
   it('should be defined', () => {

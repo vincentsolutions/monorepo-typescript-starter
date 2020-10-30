@@ -1,8 +1,8 @@
 import {EntityManager, getManager, Repository} from "typeorm/index";
 import {getNamespace} from "cls-hooked";
 import {typeOrmEntityManagerKey} from "../../decorators/transaction.decorator";
-import {coreConstants} from "../../../auth/constants";
 import {BaseEntity} from "../entities/base-entity";
+import {coreConstants} from "../../core.constants";
 
 export abstract class BaseRepository<TEntity extends BaseEntity = BaseEntity> extends Repository<TEntity> {
 

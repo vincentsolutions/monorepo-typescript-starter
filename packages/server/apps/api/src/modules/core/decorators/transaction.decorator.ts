@@ -1,6 +1,6 @@
 import {getConnection} from "typeorm/index";
 import {getNamespace} from "cls-hooked";
-import {coreConstants} from "../../auth/constants";
+import {coreConstants} from "../core.constants";
 
 export const typeOrmEntityManagerKey = "__typeOrm__transactionalEntityManager";
 

@@ -2,10 +2,11 @@ import {NestFactory} from '@nestjs/core';
 import {AppModule} from './app.module';
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
 import * as cookieParser from 'cookie-parser';
-import {authConstants, coreConstants} from "./modules/auth/constants";
+import {authConstants} from "./modules/auth/auth.constants";
 import {Environment} from "@sharedKernel";
 import {ForbiddenException} from "@nestjs/common";
 import {createNamespace} from "cls-hooked";
+import {coreConstants} from "./modules/core/core.constants";
 
 export const clsNamespace = createNamespace(coreConstants.transactionContextNamespace);
 

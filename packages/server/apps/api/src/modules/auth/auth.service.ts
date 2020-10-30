@@ -8,7 +8,7 @@ import {JwtPayload} from "./strategies/jwt/jwt.payload";
 import {Permission} from "@sharedKernel";
 import {TokenService} from "./services/token.service";
 import * as moment from 'moment';
-import {authConstants} from "./constants";
+import {authConstants} from "./auth.constants";
 
 @Injectable()
 export class AuthService {
