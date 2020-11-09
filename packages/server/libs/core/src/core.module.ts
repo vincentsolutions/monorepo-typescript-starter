@@ -1,8 +1,14 @@
-import { Module } from '@nestjs/common';
-import { CoreService } from './core.service';
+import {Module} from '@nestjs/common';
+import {CoreModule} from "./modules/core/core.module";
+import {EmailModule} from "./modules/email/email.module";
 
 @Module({
-  providers: [CoreService],
-  exports: [CoreService],
+  imports: [
+      CoreModule,
+      EmailModule
+  ],
+  exports: [
+      CoreModule
+  ],
 })
-export class CoreModule {}
+export class ServerCoreModule {}
