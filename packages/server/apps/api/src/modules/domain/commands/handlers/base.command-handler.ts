@@ -7,7 +7,7 @@ import {AggregateRootConstructor, BaseAggregateRoot} from "../../aggregate/base.
 import {BaseDomainCommand} from "../impl/base-domain.command";
 import {DomainService} from "../../services/domain.service";
 import {BaseException} from "../../../core/exceptions/impl/base.exception";
-import {Logger} from "../../../core/services/logger.service";
+import {Logger} from "@server/core";
 
 export abstract class BaseCommandHandler<
     TCommand extends BaseDomainCommand,

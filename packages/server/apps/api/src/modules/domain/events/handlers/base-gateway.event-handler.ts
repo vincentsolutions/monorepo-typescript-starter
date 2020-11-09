@@ -1,7 +1,7 @@
 import {IEventHandler} from "@nestjs/cqrs";
 import {BaseDomainEvent} from "../impl/base-domain.event";
 import {Inject} from "@nestjs/common";
-import {Logger} from "../../../core/services/logger.service";
+import {Logger} from "@server/core";
 import {Gateway} from "../../../gateway/gateway.service";
 
 export abstract class BaseGatewayEventHandler<TEvent extends BaseDomainEvent> implements IEventHandler<TEvent> {

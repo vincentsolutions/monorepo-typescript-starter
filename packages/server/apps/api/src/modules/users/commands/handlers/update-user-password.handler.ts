@@ -4,7 +4,7 @@ import {Connection} from "typeorm/index";
 import {BaseCommandHandler} from "../../../domain/commands/handlers/base.command-handler";
 import {User} from "../../user.entity";
 import {UserAggregateRoot} from "../../user.aggregate";
-import {CryptoService} from "../../../core/services/crypto.service";
+import {CryptoService} from "@server/core";
 
 @CommandHandler(UpdateUserPasswordCommand)
 export class UpdateUserPasswordCommandHandler extends BaseCommandHandler<UpdateUserPasswordCommand, User, UserAggregateRoot> {

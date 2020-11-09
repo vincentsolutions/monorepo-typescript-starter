@@ -4,7 +4,7 @@ import {BaseDomainCommand} from "../commands/impl/base-domain.command";
 import {AggregateSnapshotService} from "./aggregate-snapshot.service";
 import {BaseDomainEvent} from "../events/impl/base-domain.event";
 import {EventStoreService} from "../../event-store/event-store.service";
-import {Logger} from "../../core/services/logger.service";
+import {Logger} from "@server/core";
 import {REQUEST} from "@nestjs/core";
 import {Request} from "express";
 import {User} from "../../users/user.entity";

@@ -3,7 +3,7 @@ import { EventStoreService } from './event-store.service';
 import {EventStore} from "./event-store.provider";
 import {Config} from "../core/config/config";
 import {CqrsModule} from "@nestjs/cqrs";
-import { Logger } from '../core/services/logger.service';
+import { Logger } from '../../../../../libs/core/src/modules/core/services/logger.service';
 
 describe('EventStoreService', () => {
   let service: EventStoreService;

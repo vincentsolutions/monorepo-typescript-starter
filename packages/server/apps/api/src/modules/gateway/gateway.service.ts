@@ -6,7 +6,7 @@ import {
     WebSocketServer
 } from "@nestjs/websockets";
 import {Client, Server, Socket} from "socket.io";
-import {Logger} from "../core/services/logger.service";
+import {Logger} from "@server/core";
 import * as socketIoJwt from 'socketio-jwt';
 import {authConstants} from "../auth/auth.constants";
 import {JwtPayload} from "../auth/strategies/jwt/jwt.payload";

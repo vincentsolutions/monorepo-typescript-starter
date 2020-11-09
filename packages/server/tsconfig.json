@@ -20,6 +20,12 @@
       ],
       "@server/core/*": [
         "libs/core/src/*"
+      ],
+      "@server/job": [
+        "libs/job/src"
+      ],
+      "@server/job/*": [
+        "libs/job/src/*"
       ]
     }
   },

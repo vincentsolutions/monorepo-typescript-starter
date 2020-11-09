@@ -7,7 +7,7 @@ import {getRepositoryToken, TypeOrmModule} from "@nestjs/typeorm";
 import {User} from "./user.entity";
 import {CoreModule} from "../core/core.module";
 import {AggregateSnapshot} from "../domain/entities/aggregate-snapshot.entity";
-import * as ormConfig from "../../ormconfig";
+import * as ormConfig from "../../../../../ormconfig";
 
 describe('Users', () => {
     let app: INestApplication;

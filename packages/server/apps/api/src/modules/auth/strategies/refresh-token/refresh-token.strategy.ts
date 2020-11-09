@@ -4,7 +4,7 @@ import { Strategy } from 'passport-cookie';
 import {UsersService} from "../../../users/users.service";
 import {Request} from "express";
 import {User} from "../../../users/user.entity";
-import {Logger} from "../../../core/services/logger.service";
+import {Logger} from "@server/core";
 import {TokenService} from "../../services/token.service";
 import {authConstants} from "../../auth.constants";
 

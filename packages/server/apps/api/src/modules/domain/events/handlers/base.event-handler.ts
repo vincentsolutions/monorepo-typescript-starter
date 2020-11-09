@@ -1,6 +1,6 @@
 import {IEventHandler} from "@nestjs/cqrs";
 import {Inject} from "@nestjs/common";
-import {Logger} from "../../../core/services/logger.service";
+import {Logger} from "@server/core";
 import {Gateway} from "../../../gateway/gateway.service";
 import {BaseDomainEvent} from "../impl/base-domain.event";
 import {Connection, ObjectType} from "typeorm/index";

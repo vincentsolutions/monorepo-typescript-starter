@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import {AuthService} from "./auth.service";
 import {UsersService} from "../users/users.service";
-import {CryptoService} from "../core/services/crypto.service";
+import {CryptoService} from "../../../../../libs/core/src/modules/core/services/crypto.service";
 import {JwtModule, JwtService} from "@nestjs/jwt";
 import {CqrsModule} from "@nestjs/cqrs";
 

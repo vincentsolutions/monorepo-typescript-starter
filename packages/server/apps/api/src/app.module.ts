@@ -1,9 +1,10 @@
 import {MiddlewareConsumer, Module, NestModule, OnModuleInit, RequestMethod} from '@nestjs/common';
+import { CoreModule as SharedCoreModule } from '@server/core';
 import {CoreModule} from './modules/core/core.module';
 import {UsersModule} from './modules/users/users.module';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {Connection, Repository} from "typeorm/index";
-import * as ormConfig from './ormconfig';
+import * as ormConfig from '../../../ormconfig';
 import {AuthModule} from "./modules/auth/auth.module";
 import {User} from "./modules/users/user.entity";
 import {CommandBus, CqrsModule, EventBus} from "@nestjs/cqrs";
@@ -18,10 +19,11 @@ import {GatewayModule} from './modules/gateway/gateway.module';
 import {Permission} from "@sharedKernel";
 import {TransactionMiddleware} from "./modules/core/middlewares/transaction.middleware";
 import {BullModule} from "@nestjs/bull";
-import {coreConstants} from "./modules/core/core.constants";
+import {coreConstants} from "@server/core";
 
 @Module({
     imports: [
+        SharedCoreModule,
         TypeOrmModule.forRoot(ormConfig),
         BullModule.forRoot({ redis: coreConstants.redisSettings }),
         CqrsModule,

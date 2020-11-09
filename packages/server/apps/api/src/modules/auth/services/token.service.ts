@@ -1,5 +1,5 @@
 import {Injectable} from "@nestjs/common";
-import {Logger} from "../../core/services/logger.service";
+import {Logger} from "@server/core";
 import {InjectRepository} from "@nestjs/typeorm";
 import {RefreshToken} from "../entities/refresh-token.entity";
 import {CookieOptions} from "express";

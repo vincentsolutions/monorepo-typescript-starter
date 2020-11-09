@@ -1,7 +1,7 @@
 import {Test, TestingModule} from '@nestjs/testing';
 import {AuthService} from './auth.service';
 import {UsersService} from "../users/users.service";
-import {CryptoService} from "../core/services/crypto.service";
+import {CryptoService} from "../../../../../libs/core/src/modules/core/services/crypto.service";
 import {JwtService} from "@nestjs/jwt";
 import {UserMock_JohnDoe} from "../../../test/mocks/user.mocks";
 import {JwtPayload} from "./strategies/jwt/jwt.payload";

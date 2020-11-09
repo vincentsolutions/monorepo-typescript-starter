@@ -6,7 +6,7 @@ import {authConstants} from "./modules/auth/auth.constants";
 import {Environment} from "@sharedKernel";
 import {ForbiddenException} from "@nestjs/common";
 import {createNamespace} from "cls-hooked";
-import {coreConstants} from "./modules/core/core.constants";
+import {coreConstants} from "@server/core";
 
 export const clsNamespace = createNamespace(coreConstants.transactionContextNamespace);
 

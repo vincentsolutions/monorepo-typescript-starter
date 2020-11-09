@@ -6,7 +6,7 @@ import * as http from "http";
 import {Event} from "geteventstore-promise/index";
 import {Subject} from "rxjs";
 import * as xml2js from 'xml2js';
-import {Logger} from "../core/services/logger.service";
+import {Logger} from "@server/core";
 
 export type DomainEventFactoryMethod = (data: any) => BaseDomainEvent;
 

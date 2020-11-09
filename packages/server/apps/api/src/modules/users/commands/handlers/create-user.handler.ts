@@ -5,7 +5,7 @@ import {UserAggregateRoot} from "../../user.aggregate";
 import {DomainValidationException} from "../../../core/exceptions/impl/domain-validation.exception";
 import {User} from "../../user.entity";
 import {Connection} from "typeorm/index";
-import {CryptoService} from "../../../core/services/crypto.service";
+import {CryptoService} from "@server/core";
 import {ICreateUser} from "@sharedKernel";
 
 @CommandHandler(CreateUserCommand)

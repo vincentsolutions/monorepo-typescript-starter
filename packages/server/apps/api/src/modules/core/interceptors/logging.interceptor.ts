@@ -1,7 +1,7 @@
 import {CallHandler, ExecutionContext, Injectable, NestInterceptor} from "@nestjs/common";
 import {Observable} from "rxjs";
 import {Request} from "express";
-import {Logger} from "../services/logger.service";
+import {Logger} from "@server/core";
 import * as moment from "moment";
 import {tap} from "rxjs/operators";
 

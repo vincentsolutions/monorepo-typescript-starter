@@ -1,9 +1,8 @@
 import {Global, Module} from '@nestjs/common';
 import {DefaultValidationPipe} from "./pipes/validation/default-validation.pipe";
-import {CryptoService} from "./services/crypto.service";
 import {Config} from "./config/config";
-import {Logger} from "./services/logger.service";
 import {CqrsModule} from "@nestjs/cqrs";
+import {CryptoService, Logger} from "@server/core";
 
 @Global()
 @Module({
