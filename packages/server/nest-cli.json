@@ -27,6 +27,24 @@
       "compilerOptions": {
         "tsConfigPath": "libs/core/tsconfig.lib.json"
       }
+    },
+    "job": {
+      "type": "library",
+      "root": "libs/job",
+      "entryFile": "index",
+      "sourceRoot": "libs/job/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/job/tsconfig.lib.json"
+      }
+    },
+    "worker": {
+      "type": "application",
+      "root": "apps/worker",
+      "entryFile": "main",
+      "sourceRoot": "apps/worker/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/worker/tsconfig.app.json"
+      }
     }
   },
   "monorepo": true,
